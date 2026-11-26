@@ -1,12 +1,18 @@
-const screens = document.querySelectorAll(".screen");
 const splash = document.querySelector("#splash");
-const regForm = document.querySelector("#regForm");
-const regMsg = document.querySelector("#regMsg");
+const navLogin = document.querySelector("#navLogin");
+const authModal = document.querySelector("#authModal");
+const closeModal = document.querySelector("#closeModal");
 const logForm = document.querySelector("#logForm");
+const regForm = document.querySelector("#regForm");
+const welcomeView = document.querySelector("#welcomeView");
 const logMsg = document.querySelector("#logMsg");
+const regMsg = document.querySelector("#regMsg");
 const hello = document.querySelector("#welcomeText");
+const switchToRegister = document.querySelector("#switchToRegister");
+const switchToLogin = document.querySelector("#switchToLogin");
+const logoutBtn = document.querySelector("#logoutBtn");
 
-/* ---------- Safe storage with memory fallback ---------- */
+/* ---------- Safe storage with fallback ---------- */
 const memory = {};
 const store = {
   get(key) {
@@ -19,37 +25,74 @@ const store = {
   },
 };
 
-/* ---------- Screens visibility toggle ---------- */
-const show = (id) => {
-  screens.forEach((s) => {
-    if (s.id === id) {
-      s.classList.remove("hidden");
-    } else {
-      s.classList.add("hidden");
-    }
-  });
-  window.scrollTo(0, 0);
-};
-
-/* ---------- Splash: 2 seconds, then show home ---------- */
+/* ---------- Splash screen timer ---------- */
 const hideSplash = () => {
   if (splash) splash.classList.add("hidden");
 };
 setTimeout(hideSplash, 2000);
 if (splash) splash.addEventListener("click", hideSplash);
 
-/* ---------- Bulletproof navigation click handler ---------- */
-document.addEventListener("click", (e) => {
-  const el = e.target.closest("a, button");
-  if (!el) return;
-
-  const targetId = el.getAttribute("data-target");
-  if (targetId) {
-    e.preventDefault();
-    if (regMsg) regMsg.textContent = "";
-    if (logMsg) logMsg.textContent = "";
-    show(targetId);
+/* ---------- Floating Modal Controls ---------- */
+const openModal = (view = "login") => {
+  authModal.classList.remove("hidden");
+  logMsg.textContent = "";
+  regMsg.textContent = "";
+  
+  const loggedUser = store.get("currentUser");
+  if (loggedUser) {
+    showWelcome(loggedUser);
+  } else if (view === "register") {
+    showRegisterForm();
+  } else {
+    showLoginForm();
   }
+};
+
+const closeModalWindow = () => {
+  authModal.classList.add("hidden");
+};
+
+const showLoginForm = () => {
+  logForm.classList.remove("hidden");
+  regForm.classList.add("hidden");
+  welcomeView.classList.add("hidden");
+};
+
+const showRegisterForm = () => {
+  regForm.classList.remove("hidden");
+  logForm.classList.add("hidden");
+  welcomeView.classList.add("hidden");
+};
+
+const showWelcome = (name) => {
+  hello.textContent = `Welcome, ${name}!`;
+  welcomeView.classList.remove("hidden");
+  logForm.classList.add("hidden");
+  regForm.classList.add("hidden");
+};
+
+/* Open modal when clicking Login in navbar */
+navLogin.addEventListener("click", (e) => {
+  e.preventDefault();
+  const loggedUser = store.get("currentUser");
+  openModal(loggedUser ? "welcome" : "login");
+});
+
+/* Close modal on X button or backdrop click */
+closeModal.addEventListener("click", closeModalWindow);
+authModal.addEventListener("click", (e) => {
+  if (e.target === authModal) closeModalWindow();
+});
+
+/* Switch views inside the modal */
+switchToRegister.addEventListener("click", (e) => {
+  e.preventDefault();
+  showRegisterForm();
+});
+
+switchToLogin.addEventListener("click", (e) => {
+  e.preventDefault();
+  showLoginForm();
 });
 
 /* ---------- Saved users helper ---------- */
@@ -62,7 +105,7 @@ const getUsers = () => {
 if (regForm) {
   regForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (regMsg) regMsg.textContent = "";
+    regMsg.textContent = "";
     const f = regForm.elements;
     try {
       if (f.password.value.length < 8)
@@ -85,16 +128,13 @@ if (regForm) {
       store.set("users", JSON.stringify(users));
       regForm.reset();
       
-      show("login");
-      if (logMsg) {
-        logMsg.style.color = "var(--brand)";
-        logMsg.textContent = "Account created successfully! Please log in.";
-      }
+      // Switch back to login view and show success message
+      showLoginForm();
+      logMsg.style.color = "var(--brand)";
+      logMsg.textContent = "Account created! Please log in.";
     } catch (error) {
-      if (regMsg) {
-        regMsg.style.color = "#c92a2a";
-        regMsg.textContent = error.message;
-      }
+      regMsg.style.color = "#c92a2a";
+      regMsg.textContent = error.message;
     }
   });
 }
@@ -103,10 +143,8 @@ if (regForm) {
 if (logForm) {
   logForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    if (logMsg) {
-      logMsg.style.color = "#c92a2a";
-      logMsg.textContent = "";
-    }
+    logMsg.style.color = "#c92a2a";
+    logMsg.textContent = "";
     
     const f = logForm.elements;
     const mail = f.email.value.trim().toLowerCase();
@@ -116,13 +154,32 @@ if (logForm) {
     const user = users.find((u) => u.email === mail);
     
     if (!user) {
-      if (logMsg) logMsg.textContent = "No account found with this email.";
+      logMsg.textContent = "No account found with this email.";
     } else if (user.password !== password) {
-      if (logMsg) logMsg.textContent = "Incorrect password.";
+      logMsg.textContent = "Incorrect password.";
     } else {
-      if (hello) hello.textContent = `Welcome, ${user.name}!`;
+      store.set("currentUser", user.name);
       logForm.reset();
-      show("welcome");
+      showWelcome(user.name);
+      navLogin.textContent = user.name;
     }
   });
 }
+
+/* ---------- Logout ---------- */
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    store.set("currentUser", "");
+    navLogin.textContent = "Login";
+    showLoginForm();
+    closeModalWindow();
+  });
+}
+
+/* Check login state on page load */
+window.addEventListener("DOMContentLoaded", () => {
+  const loggedUser = store.get("currentUser");
+  if (loggedUser) {
+    navLogin.textContent = loggedUser;
+  }
+});

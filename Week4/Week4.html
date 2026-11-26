@@ -7,30 +7,30 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Splash screen -->
+  <!-- Splash screen: shows for 2 seconds on load -->
   <section id="splash" class="splash" aria-label="Loading">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10" alt="Pinmilapil National High School logo" class="logo" width="96" height="96">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10" alt="Logo" class="logo" width="96" height="96">
     <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
     <div class="loader"></div>
   </section>
 
   <header>
     <div class="brand">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10" alt="Pinmilapil National High School logo" class="logo" width="56" height="56">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10" alt="Logo" class="logo" width="56" height="56">
       <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
     </div>
     <nav aria-label="Main">
       <ul>
-        <li><a href="#home" data-target="home">Notices</a></li>
-        <li><a href="#deadlines" data-target="home">Deadlines</a></li>
-        <li><a href="#submit" data-target="home">Post a notice</a></li>
-        <li><a href="#login" id="navLogin" class="nav-login" data-target="login">Login</a></li>
+        <li><a href="#notices">Notices</a></li>
+        <li><a href="#deadlines">Deadlines</a></li>
+        <li><a href="#submit">Post a notice</a></li>
+        <li><a href="#login" id="navLogin" class="nav-login">Login</a></li>
       </ul>
     </nav>
   </header>
 
-  <!-- Home: notice board -->
-  <main id="home" class="screen">
+  <!-- Main Notice Board -->
+  <main id="home">
     <section id="notices">
       <h2>Notices</h2>
 
@@ -92,14 +92,6 @@
 
     <section id="deadlines">
       <h2>Upcoming deadlines</h2>
-
-      <h3>Categories</h3>
-      <ul>
-        <li>Academic</li>
-        <li>Event</li>
-        <li>General</li>
-      </ul>
-
       <table>
         <caption>Deadlines this month</caption>
         <thead>
@@ -113,55 +105,59 @@
     </section>
   </main>
 
-  <!-- Login -->
-  <section id="login" class="screen auth hidden">
-    <form id="logForm" class="card">
-      <h2>Log in</h2>
-      <p>
-        <label for="logEmail">Email</label><br>
-        <input id="logEmail" name="email" type="email" required>
-      </p>
-      <p>
-        <label for="logPassword">Password</label><br>
-        <input id="logPassword" name="password" type="password" required>
-      </p>
-      <button type="submit">Log in</button>
-      <p id="logMsg" class="message" role="alert"></p>
-      <p class="auth-foot">No account yet? <a href="#register" id="toRegister" data-target="register">Register</a></p>
-    </form>
-  </section>
+  <!-- Floating Auth Modal (Floating Login Window) -->
+  <div id="authModal" class="modal-backdrop hidden">
+    <div class="modal-card">
+      <button id="closeModal" class="close-btn" type="button">&times;</button>
+      
+      <!-- Login Form -->
+      <form id="logForm" class="auth-form">
+        <h2>Log in</h2>
+        <p>
+          <label for="logEmail">Email</label><br>
+          <input id="logEmail" name="email" type="email" required>
+        </p>
+        <p>
+          <label for="logPassword">Password</label><br>
+          <input id="logPassword" name="password" type="password" required>
+        </p>
+        <button type="submit">Log in</button>
+        <p id="logMsg" class="message" role="alert"></p>
+        <p class="auth-foot">No account yet? <a href="#" id="switchToRegister">Register</a></p>
+      </form>
 
-  <!-- Register -->
-  <section id="register" class="screen auth hidden">
-    <form id="regForm" class="card">
-      <h2>Create account</h2>
-      <p>
-        <label for="regName">Name</label><br>
-        <input id="regName" name="name" required>
-      </p>
-      <p>
-        <label for="regEmail">Email</label><br>
-        <input id="regEmail" name="email" type="email" required>
-      </p>
-      <p>
-        <label for="regPassword">Password</label><br>
-        <input id="regPassword" name="password" type="password" required>
-      </p>
-      <p>
-        <label for="regConfirm">Confirm password</label><br>
-        <input id="regConfirm" name="confirm" type="password" required>
-      </p>
-      <button type="submit">Register</button>
-      <p id="regMsg" class="message" role="alert"></p>
-      <p class="auth-foot">Already registered? <a href="#login" id="toLogin" data-target="login">Log in</a></p>
-    </form>
-  </section>
+      <!-- Register Form -->
+      <form id="regForm" class="auth-form hidden">
+        <h2>Create account</h2>
+        <p>
+          <label for="regName">Name</label><br>
+          <input id="regName" name="name" required>
+        </p>
+        <p>
+          <label for="regEmail">Email</label><br>
+          <input id="regEmail" name="email" type="email" required>
+        </p>
+        <p>
+          <label for="regPassword">Password</label><br>
+          <input id="regPassword" name="password" type="password" required>
+        </p>
+        <p>
+          <label for="regConfirm">Confirm password</label><br>
+          <input id="regConfirm" name="confirm" type="password" required>
+        </p>
+        <button type="submit">Register</button>
+        <p id="regMsg" class="message" role="alert"></p>
+        <p class="auth-foot">Already registered? <a href="#" id="switchToLogin">Log in</a></p>
+      </form>
 
-  <!-- Welcome -->
-  <section id="welcome" class="screen auth hidden">
-    <h2 id="welcomeText"></h2>
-    <button id="logout" type="button" data-target="login">Log out</button>
-  </section>
+      <!-- Welcome View (Shown when logged in) -->
+      <div id="welcomeView" class="auth-form hidden" style="text-align: center;">
+        <h2 id="welcomeText"></h2>
+        <p style="margin: 1rem 0; color: var(--muted);">You are successfully logged in.</p>
+        <button id="logoutBtn" type="button">Log out</button>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <p>&copy; 2026 PINMILAPIL NATIONAL HIGH SCHOOL</p>
