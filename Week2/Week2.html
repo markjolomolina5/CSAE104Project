@@ -1,47 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CSS Flexbox</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Notices</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
   <header>
-    <img src="https://www.dmmmsu.edu.ph/wp-content/uploads/2025/07/DMMMSU-News-Template-transparent-logos.png" alt="DMMMSU Logo" />
-    <h1>Don Mariano Marcos Memorial State University</h1>
+    <h1>Campus Notices</h1>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#notices">Notices</a></li>
+        <li><a href="#deadlines">Deadlines</a></li>
+        <li><a href="#submit">Post a notice</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <nav>
-    <a href="home.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="register.html">Register</a>
-  </nav>
+  <main>
+    <section id="notices">
+      <h2>Notices</h2>
 
-  <div class="content">
-    <main>
-      <form action="login.php" method="post">
-        <h3>Login Form</h3>
+      <article class="notice">
+        <h3>Enrolment Schedule Released</h3>
+        <p class="meta">
+          <time datetime="2026-11-14">14 November 2026</time> · <span class="tag">Academic</span>
+        </p>
+        <p>The enrolment schedule for next term is now available. Check your assigned date and time before the deadline.</p>
+      </article>
 
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required />
+      <article class="notice">
+        <h3>Library Extended Hours During Finals</h3>
+        <p class="meta">
+          <time datetime="2026-11-13">13 November 2026</time> · <span class="tag">Academic</span>
+        </p>
+        <p>The library will stay open until 10 PM on weekdays during finals week. Bring your school ID at the entrance.</p>
+      </article>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
+      <article class="notice">
+        <h3>Computer Lab Maintenance on Saturday</h3>
+        <p class="meta">
+          <time datetime="2026-11-12">12 November 2026</time> · <span class="tag">General</span>
+        </p>
+        <p>The computer laboratories will be closed this Saturday for system updates. Regular schedules resume on Monday.</p>
+      </article>
+    </section>
 
-        <button type="submit">Login</button>
+    <section id="submit">
+      <h2>Post a notice</h2>
+      <form action="#" method="post">
+        <p>
+          <label for="title">Title</label><br>
+          <input type="text" id="title" name="title" required maxlength="100">
+        </p>
+        <p>
+          <label for="category">Category</label><br>
+          <select id="category" name="category">
+            <option value="academic">Academic</option>
+            <option value="event">Event</option>
+            <option value="general">General</option>
+          </select>
+        </p>
+        <p>
+          <label for="date">Date</label><br>
+          <input type="date" id="date" name="date">
+        </p>
+        <p>
+          <label for="message">Message</label><br>
+          <textarea id="message" name="message" rows="4" required></textarea>
+        </p>
+        <p>
+          <label for="email">Your email</label><br>
+          <input type="email" id="email" name="email" required>
+        </p>
+        <button type="submit">Post notice</button>
       </form>
-    </main>
+    </section>
 
-    <aside>
-      <img src="https://journalnews.com.ph/wp-content/uploads/2024/02/DMMM.jpg" alt="DMMMSU campus sign" />
-    </aside>
-  </div>
+    <section id="deadlines">
+      <h2>Upcoming deadlines</h2>
+
+      <h3>Categories</h3>
+      <ul>
+        <li>Academic</li>
+        <li>Event</li>
+        <li>General</li>
+      </ul>
+
+      <table>
+        <caption>Deadlines this month</caption>
+        <thead>
+          <tr><th scope="col">Activity</th><th scope="col">Date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Enrolment ends</td><td>20 January</td></tr>
+          <tr><td>Programming contest registration</td><td>25 January</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
 
   <footer>
-    &copy; 2024 Don Mariano Marcos Memorial State University. All rights reserved.
+    <p>&copy; 2026 Campus Notices</p>
   </footer>
 </body>
 </html>
