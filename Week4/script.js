@@ -2,18 +2,21 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     // Splash Screen
+    function hideSplashScreen() {
     const splash = document.getElementById("splash");
 
-    if (splash) {
-        setTimeout(function () {
-            splash.classList.add("hidden");
+    if (!splash) return;
 
-            setTimeout(function () {
-                splash.remove();
-            }, 450);
+    splash.classList.add("hidden");
 
-        }, 1200);
-    }
+    setTimeout(() => {
+        splash.style.display = "none";
+    }, 450);
+}
+
+window.addEventListener("load", function () {
+    setTimeout(hideSplashScreen, 1000);
+});
 
     // Elements
     const navLogin = document.getElementById("navLogin");
