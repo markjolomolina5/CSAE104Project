@@ -42,7 +42,6 @@ header {
   gap: 14px;
 }
 
-/* Logo on the left, school name on the right */
 .brand {
   display: flex;
   flex-direction: row;
@@ -352,17 +351,10 @@ footer p {
 }
 
 
-/* The .meta line stayed gray because of SPECIFICITY.
-   .meta (one class, 0,1,0) beats p (one element, 0,0,1) even though
-   p comes later in the file. Order only matters when specificity is
-   equal, and inherited values lose to any rule that targets the
-   element itself. */
-
-
 /* ================= Splash, login, register, dark mode ================= */
 
-/* ---------- Screens ---------- */
-.screen.hidden { display: none; }
+/* ---------- Screens (Fixed with !important so hidden works) ---------- */
+.screen.hidden { display: none !important; }
 
 /* ---------- Splash (2 seconds total) ---------- */
 .splash {
@@ -377,7 +369,6 @@ footer p {
   text-align: center;
   color: var(--secondary);
   background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 55%, var(--brand-light) 100%);
-  /* visible for 1.6s, fades out over 0.4s, fully gone at 2s, no JavaScript needed */
   animation: splash-out 0.4s ease 1.6s forwards;
 }
 
@@ -406,15 +397,17 @@ footer p {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ---------- Login button in the nav ---------- */
+/* ---------- Login button in the nav (Background plate removed) ---------- */
 nav a.nav-login {
-  background: var(--secondary);
-  color: var(--brand-dark);
+  background: transparent;
+  color: var(--secondary);
   font-weight: 700;
 }
 
 nav a.nav-login:hover,
-nav a.nav-login:focus-visible { background: #ffffff; }
+nav a.nav-login:focus-visible { 
+  background: rgba(229, 211, 175, 0.2); 
+}
 
 /* ---------- Login / Register / Welcome ---------- */
 .auth {
@@ -442,7 +435,6 @@ nav a.nav-login:focus-visible { background: #ffffff; }
   font-weight: 600;
 }
 
-/* Register / Log in choice: lower left of the card */
 .card .auth-foot {
   margin: 14px 0 0;
   padding-top: 14px;
@@ -457,7 +449,7 @@ nav a.nav-login:focus-visible { background: #ffffff; }
   font-weight: 700;
 }
 
-/* ---------- Theme button (bottom right, on every screen) ---------- */
+/* ---------- Theme button ---------- */
 .theme {
   position: fixed;
   right: 1rem;
@@ -467,7 +459,7 @@ nav a.nav-login:focus-visible { background: #ffffff; }
   border: 2px solid var(--secondary);
 }
 
-/* ---------- Dark mode: new values for the same variables ---------- */
+/* ---------- Dark mode ---------- */
 [data-theme="dark"] {
   --page: #1c1416;
   --surface: #2a1d20;
@@ -499,7 +491,6 @@ nav a.nav-login:focus-visible { background: #ffffff; }
 [data-theme="dark"] .card .message { color: #ff8787; }
 [data-theme="dark"] button:focus-visible { outline-color: var(--secondary); }
 
-/* ---------- Login page: no plate (card background) ---------- */
 #login .card {
   background: transparent;
   border: 0;

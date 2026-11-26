@@ -9,8 +9,6 @@ const logMsg = document.querySelector("#logMsg");
 const hello = document.querySelector("#welcomeText");
 
 /* ---------- Safe storage ---------- */
-// localStorage can be blocked (some previews, private modes).
-// If it is, fall back to memory so login and register still work.
 const memory = {};
 const store = {
   get(key) {
@@ -24,7 +22,6 @@ const store = {
 };
 
 /* ---------- Screens ---------- */
-// show hides every screen except the one you name
 const show = (id) => {
   screens.forEach((s) => s.classList.toggle("hidden", s.id !== id));
   regMsg.textContent = "";
@@ -35,7 +32,7 @@ const show = (id) => {
 /* ---------- Splash: 2 seconds, then the notice board ---------- */
 const hideSplash = () => splash.classList.add("hidden");
 setTimeout(hideSplash, 2000);
-splash.addEventListener("click", hideSplash); // tap to skip
+splash.addEventListener("click", hideSplash);
 
 /* ---------- One click listener for links and buttons ---------- */
 const goTo = {
@@ -53,11 +50,11 @@ document.addEventListener("click", (e) => {
     e.preventDefault();
     show(id);
   } else if (el.matches("nav a")) {
-    show("home"); // Notices, Deadlines, Post a notice
+    show("home");
   }
 });
 
-/* ---------- Saved users (practice only: localStorage) ---------- */
+/* ---------- Saved users ---------- */
 const getUsers = () => {
   try { return JSON.parse(store.get("users")) ?? []; }
   catch { return []; }
@@ -76,7 +73,8 @@ regForm.addEventListener("submit", (e) => {
     if (getUsers().some((u) => u.email === email))
       throw new Error("Email already used");
     const users = [...getUsers(), {
-      name: f.name.value, email,
+      name: f.name.value,
+      email,
       password: f.password.value,
     }];
     store.set("users", JSON.stringify(users));
@@ -102,7 +100,7 @@ logForm.addEventListener("submit", (e) => {
   }
 });
 
-/* ---------- Light / dark theme (remembered) ---------- */
+/* ---------- Light / dark theme ---------- */
 const setTheme = (name) => {
   const dark = name === "dark";
   root.dataset.theme = name;
