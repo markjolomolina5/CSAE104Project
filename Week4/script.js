@@ -32,25 +32,25 @@ const hideSplash = () => splash.classList.add("hidden");
 setTimeout(hideSplash, 2000);
 splash.addEventListener("click", hideSplash);
 
-/* ---------- Navigation and buttons click handler ---------- */
-const goTo = {
-  navLogin: "login",
-  toLogin: "login",
-  toRegister: "register",
-  logout: "login",
-};
-
+/* ---------- Bulletproof navigation click handler ---------- */
 document.addEventListener("click", (e) => {
   const el = e.target.closest("a, button");
   if (!el) return;
-  
-  const id = goTo[el.id];
-  if (id) {
+
+  const href = el.getAttribute("href") || "";
+  const id = el.id;
+
+  if (id === "navLogin" || id === "toLogin" || id === "logout" || href === "#login") {
     e.preventDefault();
-    regMsg.textContent = "";
-    logMsg.textContent = "";
-    show(id);
-  } else if (el.matches("nav a")) {
+    if (regMsg) regMsg.textContent = "";
+    if (logMsg) logMsg.textContent = "";
+    show("login");
+  } else if (id === "toRegister" || href === "#register") {
+    e.preventDefault();
+    if (regMsg) regMsg.textContent = "";
+    if (logMsg) logMsg.textContent = "";
+    show("register");
+  } else if (el.matches("nav a") || href === "#notices" || href === "#deadlines" || href === "#submit" || href === "#home") {
     e.preventDefault();
     show("home");
   }
@@ -63,70 +63,79 @@ const getUsers = () => {
 };
 
 /* ---------- Register ---------- */
-regForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  regMsg.textContent = "";
-  const f = regForm.elements;
-  try {
-    if (f.password.value.length < 8)
-      throw new Error("Password must be at least 8 characters");
-    if (f.password.value !== f.confirm.value)
-      throw new Error("Passwords do not match");
-    
-    const email = f.email.value.trim().toLowerCase();
-    const currentUsers = getUsers();
-    
-    if (currentUsers.some((u) => u.email === email))
-      throw new Error("Email already registered");
-    
-    const users = [...currentUsers, {
-      name: f.name.value.trim(),
-      email,
-      password: f.password.value,
-    }];
-    
-    store.set("users", JSON.stringify(users));
-    regForm.reset();
-    
-    // Switch to login and show success notice
-    show("login");
-    logMsg.style.color = "var(--brand)";
-    logMsg.textContent = "Account created! Please log in.";
-  } catch (error) {
-    regMsg.style.color = "#c92a2a";
-    regMsg.textContent = error.message;
-  }
-});
+if (regForm) {
+  regForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (regMsg) regMsg.textContent = "";
+    const f = regForm.elements;
+    try {
+      if (f.password.value.length < 8)
+        throw new Error("Password must be at least 8 characters");
+      if (f.password.value !== f.confirm.value)
+        throw new Error("Passwords do not match");
+      
+      const email = f.email.value.trim().toLowerCase();
+      const currentUsers = getUsers();
+      
+      if (currentUsers.some((u) => u.email === email))
+        throw new Error("Email already registered");
+      
+      const users = [...currentUsers, {
+        name: f.name.value.trim(),
+        email,
+        password: f.password.value,
+      }];
+      
+      store.set("users", JSON.stringify(users));
+      regForm.reset();
+      
+      show("login");
+      if (logMsg) {
+        logMsg.style.color = "var(--brand)";
+        logMsg.textContent = "Account created! Please log in.";
+      }
+    } catch (error) {
+      if (regMsg) {
+        regMsg.style.color = "#c92a2a";
+        regMsg.textContent = error.message;
+      }
+    }
+  });
+}
 
 /* ---------- Login ---------- */
-logForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  logMsg.style.color = "#c92a2a";
-  logMsg.textContent = "";
-  
-  const f = logForm.elements;
-  const mail = f.email.value.trim().toLowerCase();
-  const password = f.password.value;
-  
-  const users = getUsers();
-  const user = users.find((u) => u.email === mail);
-  
-  if (!user) {
-    logMsg.textContent = "No account found with this email.";
-  } else if (user.password !== password) {
-    logMsg.textContent = "Incorrect password.";
-  } else {
-    hello.textContent = `Welcome, ${user.name}!`;
-    logForm.reset();
-    show("welcome");
-  }
-});
+if (logForm) {
+  logForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (logMsg) {
+      logMsg.style.color = "#c92a2a";
+      logMsg.textContent = "";
+    }
+    
+    const f = logForm.elements;
+    const mail = f.email.value.trim().toLowerCase();
+    const password = f.password.value;
+    
+    const users = getUsers();
+    const user = users.find((u) => u.email === mail);
+    
+    if (!user) {
+      if (logMsg) logMsg.textContent = "No account found with this email.";
+    } else if (user.password !== password) {
+      if (logMsg) logMsg.textContent = "Incorrect password.";
+    } else {
+      if (hello) hello.textContent = `Welcome, ${user.name}!`;
+      logForm.reset();
+      show("welcome");
+    }
+  });
+}
 
 /* ---------- Light / dark theme ---------- */
 const setTheme = (name) => {
   const dark = name === "dark";
   root.dataset.theme = name;
-  toggle.textContent = dark ? "Light" : "Dark";
+  if (toggle) toggle.textContent = dark ? "Light" : "Dark";
   store.set("theme", name);
 };
 
@@ -134,7 +143,9 @@ const systemDark = matchMedia("(prefers-color-scheme: dark)").matches;
 const saved = store.get("theme");
 setTheme(saved ?? (systemDark ? "dark" : "light"));
 
-toggle.onclick = () => {
-  const dark = root.dataset.theme === "dark";
-  setTheme(dark ? "light" : "dark");
-};
+if (toggle) {
+  toggle.onclick = () => {
+    const dark = root.dataset.theme === "dark";
+    setTheme(dark ? "light" : "dark");
+  };
+}
