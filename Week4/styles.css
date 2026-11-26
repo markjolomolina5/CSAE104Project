@@ -499,6 +499,13 @@ nav a.nav-login:focus-visible { background: #ffffff; }
 [data-theme="dark"] .card .message { color: #ff8787; }
 [data-theme="dark"] button:focus-visible { outline-color: var(--secondary); }
 
+/* ---------- Login page: no plate (card background) ---------- */
+#login .card {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
 @media (max-width: 480px) {
   .splash .logo { width: 80px; height: 80px; }
 }
