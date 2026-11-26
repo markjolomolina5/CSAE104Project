@@ -1,11 +1,14 @@
 
-document.addEventListener("DOMContentLoaded", () => {
+const startApp = () => {
 
     // ==========================================
     // SELECT HTML ELEMENTS
     // ==========================================
 
-    const splash = document.getElementById("splash");
+    const splash =
+        document.getElementById("splash") ||
+        document.querySelector(".splash");
+
     const navLogin = document.getElementById("navLogin");
 
     const authModal = document.getElementById("authModal");
@@ -31,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const noticeForm = document.getElementById("noticeForm");
     const noticeList = document.getElementById("noticeList");
     const noticeMsg = document.getElementById("noticeMsg");
+
 
     // ==========================================
     // SAFE LOCAL STORAGE
@@ -69,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     };
+
 
     // ==========================================
     // HELPER FUNCTIONS
@@ -112,26 +117,46 @@ document.addEventListener("DOMContentLoaded", () => {
         element.style.color = success ? "#267a38" : "#c92a2a";
     };
 
+
     // ==========================================
-    // SPLASH SCREEN
+    // SPLASH SCREEN - IMPROVED
     // ==========================================
+
+    let splashHidden = false;
 
     const hideSplash = () => {
+
+        if (splashHidden) return;
+
+        splashHidden = true;
+
         if (!splash) return;
 
-        // Start fade-out transition
+        // Start fade-out
         splash.classList.add("hidden");
 
-        // Completely hide after transition
+        splash.style.opacity = "0";
+        splash.style.visibility = "hidden";
+        splash.style.pointerEvents = "none";
+
+        // Completely remove splash screen
         setTimeout(() => {
-            splash.style.display = "none";
-        }, 400);
+            splash.remove();
+        }, 450);
     };
 
-    // Hide splash screen after 800 milliseconds
     if (splash) {
+
+        // Normal splash screen duration
         setTimeout(hideSplash, 800);
+
+        // Backup in case the first timer is delayed
+        setTimeout(hideSplash, 1500);
+
+        // Allow user to skip splash screen
+        splash.addEventListener("click", hideSplash);
     }
+
 
     // ==========================================
     // MODAL FUNCTIONS
@@ -184,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
         regForm?.classList.add("hidden");
     };
 
+
     // ==========================================
     // NAVIGATION LOGIN BUTTON
     // ==========================================
@@ -196,6 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         openModal(user ? "welcome" : "login");
     });
+
 
     // ==========================================
     // CLOSE MODAL
@@ -222,6 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+
     // ==========================================
     // SWITCH LOGIN AND REGISTER
     // ==========================================
@@ -241,6 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showLoginForm();
 
     });
+
 
     // ==========================================
     // REGISTER ACCOUNT
@@ -315,6 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+
     // ==========================================
     // LOGIN ACCOUNT
     // ==========================================
@@ -374,6 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+
     // ==========================================
     // LOGOUT ACCOUNT
     // ==========================================
@@ -391,6 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
         closeModalWindow();
 
     });
+
 
     // ==========================================
     // RESTORE LOGIN AFTER PAGE REFRESH
@@ -413,6 +445,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
     }
+
 
     // ==========================================
     // DISPLAY SAVED NOTICES
@@ -473,6 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     renderNotices();
+
 
     // ==========================================
     // POST A SCHOOL NOTICE
@@ -557,4 +591,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-});
+};
+
+
+// ==========================================
+// START APPLICATION SAFELY
+// ==========================================
+
+if (document.readyState === "loading") {
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        startApp,
+        { once: true }
+    );
+
+} else {
+
+    startApp();
+
+}
