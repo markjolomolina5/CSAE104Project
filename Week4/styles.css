@@ -1,417 +1,337 @@
-/* Pinmilapil National High School — Notices Board */
-
-:root {
-  --brand: #db2777;
-  --brand-dark: #be185d;
-  --brand-soft: #fce7f3;
-  --surface: #ffffff;
-  --page: #fff5f7;
-  --text: #1f2933;
-  --border: #fbcfe8;
-  --radius: 8px;
-}
 
 * {
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --brand: #174a82;
+    --brand-dark: #102f55;
+    --brand-light: #347bb8;
+    --secondary: #ffffff;
+    --background: #f3f6fa;
+    --text: #263445;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
-  margin: 0;
-  background: var(--page);
-  color: var(--text);
-  display: grid;
-  gap: 16px;
+    font-family: Arial, sans-serif;
+    background: var(--background);
+    color: var(--text);
+    line-height: 1.6;
 }
 
-.hidden {
-  display: none !important;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Splash screen (CSS only) */
+/* Splash Screen */
 .splash {
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  background: var(--brand);
-  color: #ffffff;
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 1rem;
-  text-align: center;
-  padding: 16px;
-  animation: splash-out 0.3s ease 1s forwards;
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    text-align: center;
+    color: var(--secondary);
+    background: linear-gradient(
+        135deg,
+        var(--brand-dark),
+        var(--brand),
+        var(--brand-light)
+    );
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
-@keyframes splash-out {
-  to {
+.splash.hidden {
     opacity: 0;
     visibility: hidden;
-  }
+    pointer-events: none;
 }
 
 .splash-logo {
-  width: 96px;
-  height: 96px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: #ffffff;
+    width: 110px;
+    height: 110px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: white;
+    padding: 8px;
 }
 
-.splash-name {
-  margin: 0;
-  font-size: clamp(1.5rem, 6vw, 2.5rem);
-  font-weight: 700;
-}
-
-.splash-sub {
-  margin: 0;
-  opacity: 0.85;
+.splash h1 {
+    font-size: 24px;
 }
 
 .loader {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+    width: 42px;
+    height: 42px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-table {
-  display: block;
-  overflow-x: auto;
-  border-collapse: collapse;
-  width: 100%;
-  background: var(--surface);
-  border-radius: var(--radius);
-}
-
-th,
-td {
-  border: 1px solid var(--border);
-  padding: 8px 10px;
-  text-align: left;
-}
-
-th {
-  background: var(--brand-soft);
-}
-
-/* Flexbox Header & Navigation */
+/* Header */
 header {
-  background: var(--brand);
-  color: #ffffff;
-  padding: 16px 24px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px 24px;
+    background: var(--brand-dark);
+    color: white;
+    padding: 18px 6%;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 1.4rem;
-}
-
-/* School logo + name */
 .brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
 .logo {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: #ffffff;
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.brand h1 {
+    font-size: 23px;
 }
 
 nav ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    list-style: none;
+    margin-top: 18px;
 }
 
 nav a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 500;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 nav a:hover {
-  text-decoration: underline;
+    color: #f5c95e;
 }
 
-/* Log in / Register buttons in the header */
-.auth {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-.greeting {
-  font-weight: 600;
-}
-
-.btn {
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  font: inherit;
-  font-weight: 600;
-  cursor: pointer;
-  background: var(--brand);
-  color: #ffffff;
-}
-
-.btn:hover {
-  background: var(--brand-dark);
-}
-
-header .btn {
-  background: #ffffff;
-  color: var(--brand-dark);
-}
-
-header .btn:hover {
-  background: var(--brand-soft);
-}
-
-header .btn-outline {
-  background: transparent;
-  color: #ffffff;
-  border-color: #ffffff;
-}
-
-header .btn-outline:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-/* Main Content & Notices Grid (Mobile-First: 1 column) */
+/* Main Content */
 main {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 16px;
+    width: 90%;
+    max-width: 1100px;
+    margin: 35px auto;
 }
 
-.notices {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: 1fr;
+main section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+    scroll-margin-top: 20px;
+}
+
+h2 {
+    color: var(--brand);
+    margin-bottom: 20px;
 }
 
 .notice {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 0;
+    padding: 18px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.notice:last-child {
+    border-bottom: none;
 }
 
 .notice h3 {
-  margin: 8px 0 6px;
+    color: var(--brand-dark);
+    margin-bottom: 5px;
 }
 
-.notice p {
-  margin: 0;
+.meta {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
 .tag {
-  display: inline-block;
-  background: var(--brand-soft);
-  color: var(--brand-dark);
-  border-radius: 4px;
-  padding: 2px 8px;
-  font-size: 0.85rem;
-  font-weight: 600;
+    display: inline-block;
+    background: #e4eef8;
+    color: var(--brand);
+    padding: 2px 9px;
+    border-radius: 20px;
+    font-size: 12px;
 }
 
-aside {
-  width: 100%;
-  padding: 0 16px;
+/* Forms */
+form p {
+    margin-bottom: 15px;
 }
 
-aside h2 {
-  margin-top: 0;
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
-/* Contact bar */
-.contact-bar {
-  background: var(--brand-dark);
-  color: #ffffff;
-  padding: 16px 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px 24px;
+input, select, textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font: inherit;
 }
 
-.contact-item {
-  display: grid;
-  gap: 2px;
+textarea {
+    resize: vertical;
 }
 
-.contact-item strong {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  opacity: 0.85;
+button {
+    background: var(--brand);
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
 }
 
-footer {
-  text-align: center;
-  padding: 16px;
-  background: var(--brand-soft);
-  border-top: 1px solid var(--border);
-}
-
-/* Login / Register popup */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(31, 41, 51, 0.6);
-  display: grid;
-  place-items: center;
-  padding: 16px;
-  z-index: 100;
-}
-
-.modal-box {
-  position: relative;
-  width: min(100%, 360px);
-  max-height: 100%;
-  overflow-y: auto;
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 24px;
-}
-
-.close {
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  background: none;
-  border: 0;
-  font-size: 1.6rem;
-  line-height: 1;
-  cursor: pointer;
-  color: var(--text);
-}
-
-/* Tabs inside the popup */
-.tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin: 0 0 16px;
-  border-bottom: 2px solid var(--border);
-}
-
-.tab {
-  background: none;
-  border: 0;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
-  padding: 10px;
-  font: inherit;
-  font-weight: 600;
-  color: var(--text);
-  cursor: pointer;
-}
-
-.tab.active {
-  color: var(--brand-dark);
-  border-bottom-color: var(--brand);
-}
-
-.auth-form {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.auth-form input {
-  padding: 0.6rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  font: inherit;
+button:hover {
+    background: var(--brand-dark);
 }
 
 .message {
-  margin: 0;
-  color: #c92a2a;
+    margin-top: 10px;
+    font-size: 14px;
 }
 
-.message.ok {
-  color: #2b8a3e;
+/* Deadlines */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
-/* Tablet & Up: 2 columns for notices */
-@media (min-width: 600px) {
-  .notices {
-    grid-template-columns: repeat(2, 1fr);
-  }
+caption {
+    margin-bottom: 12px;
+    font-weight: bold;
 }
 
-/* Desktop & Up: 3 columns for notices + Grid page sidebar */
-@media (min-width: 960px) {
-  header {
-    padding: 24px 32px;
-  }
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
 
-  .notices {
-    grid-template-columns: repeat(3, 1fr);
-  }
+th {
+    background: var(--brand);
+    color: white;
+}
 
-  body {
-    grid-template-columns: 1fr 300px;
-    grid-template-areas:
-      "header header"
-      "main aside"
-      "contact contact"
-      "footer footer";
-    align-items: start;
-  }
+/* Authentication Modal */
+.hidden {
+    display: none !important;
+}
 
-  header {
-    grid-area: header;
-  }
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1500;
+    background: rgba(0,0,0,0.65);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+}
 
-  main {
-    grid-area: main;
-  }
+.modal-card {
+    background: white;
+    width: 100%;
+    max-width: 430px;
+    padding: 30px;
+    border-radius: 12px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
 
-  aside {
-    grid-area: aside;
-    padding-left: 0;
-    padding-right: 24px;
-  }
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: transparent;
+    color: #333;
+    font-size: 27px;
+    padding: 0 8px;
+}
 
-  .contact-bar {
-    grid-area: contact;
-  }
+.auth-form h2 {
+    margin-bottom: 20px;
+}
 
-  footer {
-    grid-area: footer;
-  }
+.auth-foot {
+    margin-top: 15px;
+}
+
+.auth-foot a {
+    color: var(--brand);
+    font-weight: bold;
+}
+
+.welcome {
+    text-align: center;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 25px;
+    background: var(--brand-dark);
+    color: white;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .brand h1 {
+        font-size: 17px;
+    }
+
+    .logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    nav ul {
+        gap: 15px;
+        font-size: 14px;
+    }
+
+    main {
+        width: 94%;
+    }
+
+    main section {
+        padding: 18px;
+    }
+
+    .splash h1 {
+        font-size: 19px;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 13px;
+    }
 }
