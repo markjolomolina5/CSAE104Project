@@ -1,334 +1,526 @@
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 :root {
-    --brand: #174a82;
-    --brand-dark: #102f55;
-    --brand-light: #347bb8;
-    --secondary: #ffffff;
-    --background: #f3f6fa;
-    --text: #263445;
+  --brand: #790d16;
+  --brand-dark: #4d080e;
+  --brand-light: #9b1c28;
+  --secondary: #e5d3af;
+  --brand-soft: #f3eada;
+  --surface: #ffffff;
+  --page: #faf6ee;
+  --text: #2b1a1c;
+  --muted: #6f5c5e;
+  --border: #e8dcc3;
+  --heading: #4d080e;
+  --link: #790d16;
+  --edge: #790d16;
+  --tag-text: #790d16;
+  --input-bg: #fffdf9;
+  --row-alt: #fbf7ef;
+  --focus-ring: rgba(121, 13, 22, 0.16);
+  --error: #c92a2a;
+  --ok: #2b8a3e;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(77, 8, 14, 0.06), 0 6px 18px rgba(77, 8, 14, 0.08);
+  --shadow-hover: 0 2px 4px rgba(77, 8, 14, 0.08), 0 12px 28px rgba(77, 8, 14, 0.14);
 }
+
+/* Dark mode: new values for the same variables */
+[data-theme="dark"] {
+  --page: #1b1214;
+  --surface: #2a1d20;
+  --text: #f4ece4;
+  --muted: #bfaeaa;
+  --border: #4a393c;
+  --heading: #e5d3af;
+  --link: #e5d3af;
+  --edge: #b3303c;
+  --tag-text: #e5d3af;
+  --brand-soft: #3d2629;
+  --input-bg: #231719;
+  --row-alt: #2f2124;
+  --focus-ring: rgba(229, 211, 175, 0.25);
+  --error: #ff8a8a;
+  --ok: #7bd88f;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 6px 18px rgba(0, 0, 0, 0.35);
+  --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.5), 0 12px 28px rgba(0, 0, 0, 0.45);
+}
+
+* { box-sizing: border-box; }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: var(--background);
-    color: var(--text);
-    line-height: 1.6;
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
 }
 
-/* Splash Screen */
+.hidden { display: none !important; }
+
+/* ---------- Splash screen (CSS only, 2 seconds) ---------- */
 .splash {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    padding: 20px;
-    text-align: center;
-    color: white;
-    background: linear-gradient(135deg, #102f55, #174a82, #347bb8);
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 55%, var(--brand-light) 100%);
+  color: var(--secondary);
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1.25rem;
+  text-align: center;
+  padding: 16px;
+  animation: splash-out 0.3s ease 2s forwards;
 }
 
-.splash.hidden {
+@keyframes splash-out {
+  to {
     opacity: 0;
     visibility: hidden;
-    pointer-events: none;
+  }
 }
 
 .splash-logo {
-    width: 110px;
-    height: 110px;
-    object-fit: contain;
-    border-radius: 50%;
-    background: white;
-    padding: 8px;
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 4px solid var(--secondary);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
-.splash h1 {
-    font-size: 24px;
+.splash-name {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(1.5rem, 6vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
 }
 
 .loader {
-    width: 42px;
-    height: 42px;
-    border: 4px solid rgba(255,255,255,0.3);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: splashSpin 1s linear infinite;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(229, 211, 175, 0.3);
+  border-top-color: var(--secondary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-@keyframes splashSpin {
-    to {
-        transform: rotate(360deg);
-    }
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-/* Header */
+/* ---------- Header ---------- */
 header {
-    background: var(--brand-dark);
-    color: white;
-    padding: 18px 6%;
+  background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 55%, var(--brand-light) 100%);
+  color: #ffffff;
+  border-bottom: 4px solid var(--secondary);
+  box-shadow: 0 6px 20px rgba(77, 8, 14, 0.3);
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
 }
 
+/* Logo on the left, school name beside it */
 .brand {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo {
-    width: 65px;
-    height: 65px;
-    object-fit: contain;
-    background: white;
-    border-radius: 50%;
-    padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
 }
 
 .brand h1 {
-    font-size: 23px;
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(1.25rem, 2.8vw + 0.6rem, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  color: var(--secondary);
 }
 
+.logo {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid var(--secondary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- Navigation ---------- */
 nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-    list-style: none;
-    margin-top: 18px;
+  list-style: none;
+  margin: 0 0 0 -16px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
 }
 
-nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
+nav a,
+.nav-link {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--secondary);
+  font: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-nav a:hover {
-    color: #f5c95e;
+nav a:hover,
+nav a:focus-visible,
+.nav-link:hover,
+.nav-link:focus-visible {
+  background: rgba(229, 211, 175, 0.2);
 }
 
-/* Main Content */
+nav a:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--secondary);
+  outline-offset: 2px;
+}
+
+.greeting {
+  padding: 6px 16px;
+  color: var(--secondary);
+  font-weight: 600;
+}
+
+/* ---------- Main content ---------- */
 main {
-    width: 90%;
-    max-width: 1100px;
-    margin: 35px auto;
+  max-width: 760px;
+  margin: 32px auto 0;
+  padding: 0 20px;
 }
 
 main section {
-    background: white;
-    padding: 25px;
-    margin-bottom: 25px;
-    border-radius: 10px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-    scroll-margin-top: 20px;
+  margin-bottom: 48px;
 }
 
 h2 {
-    color: var(--brand);
-    margin-bottom: 20px;
+  position: relative;
+  margin: 0 0 20px;
+  padding-bottom: 10px;
+  font-size: 1.5rem;
+  color: var(--heading);
+  letter-spacing: 0.01em;
 }
 
+h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 48px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--edge);
+}
+
+h3 {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+  color: var(--heading);
+}
+
+/* ---------- Notice cards ---------- */
 .notice {
-    padding: 18px 0;
-    border-bottom: 1px solid #ddd;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--edge);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.notice:last-child {
-    border-bottom: none;
+.notice:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
 }
 
-.notice h3 {
-    color: var(--brand-dark);
-    margin-bottom: 5px;
+.notice p {
+  margin: 0 0 8px;
+}
+
+.notice p:last-child {
+  margin-bottom: 0;
 }
 
 .meta {
-    color: #777;
-    font-size: 14px;
-    margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 .tag {
-    display: inline-block;
-    background: #e4eef8;
-    color: var(--brand);
-    padding: 2px 9px;
-    border-radius: 20px;
-    font-size: 12px;
+  display: inline-block;
+  background: var(--brand-soft);
+  color: var(--tag-text);
+  border-radius: 999px;
+  padding: 2px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-/* Forms */
-form p {
-    margin-bottom: 15px;
+/* ---------- Forms (post a notice, login, register) ---------- */
+.post-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+.post-form p {
+  margin: 0 0 18px;
 }
 
 label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--heading);
 }
 
 input, select, textarea {
-    width: 100%;
-    padding: 11px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font: inherit;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text);
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 textarea {
-    resize: vertical;
+  resize: vertical;
 }
 
-button {
-    background: var(--brand);
-    color: white;
-    border: none;
-    padding: 11px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 15px;
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--edge);
+  box-shadow: 0 0 0 4px var(--focus-ring);
 }
 
-button:hover {
-    background: var(--brand-dark);
+form button {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
+  color: var(--secondary);
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 28px;
+  font: inherit;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(121, 13, 22, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
-.message {
-    margin-top: 10px;
-    font-size: 14px;
+form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(121, 13, 22, 0.35);
+  filter: brightness(1.08);
 }
 
-/* Deadlines */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+form button:active {
+  transform: translateY(0);
 }
 
-caption {
-    margin-bottom: 12px;
-    font-weight: bold;
+form button:focus-visible {
+  outline: 3px solid var(--edge);
+  outline-offset: 2px;
 }
 
-th, td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
+/* ---------- Login / Register popup ---------- */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(20, 6, 8, 0.6);
 }
 
-th {
-    background: var(--brand);
-    color: white;
+.modal-box {
+  position: relative;
+  width: min(100%, 380px);
+  max-height: 100%;
+  overflow-y: auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-hover);
+  padding: 28px 24px 24px;
 }
 
-/* Authentication Modal */
-.hidden {
-    display: none !important;
+.close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: none;
+  border: 0;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text);
+  cursor: pointer;
 }
 
-.modal-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 1500;
-    background: rgba(0,0,0,0.65);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-}
-
-.modal-card {
-    background: white;
-    width: 100%;
-    max-width: 430px;
-    padding: 30px;
-    border-radius: 12px;
-    position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 12px;
-    background: transparent;
-    color: #333;
-    font-size: 27px;
-    padding: 0 8px;
+.auth-form {
+  display: grid;
+  gap: 0.75rem;
 }
 
 .auth-form h2 {
-    margin-bottom: 20px;
+  margin-bottom: 8px;
 }
 
-.auth-foot {
-    margin-top: 15px;
+.message {
+  margin: 0;
+  color: var(--error);
 }
 
-.auth-foot a {
-    color: var(--brand);
-    font-weight: bold;
+.message.ok {
+  color: var(--ok);
 }
 
-.welcome {
-    text-align: center;
+/* Register choice sits at the lower left of the login form */
+.switch {
+  justify-self: start;
+  color: var(--link);
+  font-size: 0.92rem;
+  text-decoration: none;
 }
 
-/* Footer */
+.switch:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Deadlines ---------- */
+#deadlines ul {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#deadlines li {
+  background: var(--secondary);
+  color: var(--brand-dark);
+  border-radius: 999px;
+  padding: 4px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+table {
+  width: 100%;
+  background: var(--surface);
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+caption {
+  caption-side: top;
+  text-align: left;
+  padding: 0 0 10px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  background: var(--brand);
+  color: var(--secondary);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+tbody tr:nth-child(even) {
+  background: var(--row-alt);
+}
+
+tbody tr:hover {
+  background: var(--brand-soft);
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---------- Footer ---------- */
 footer {
-    text-align: center;
-    padding: 25px;
-    background: var(--brand-dark);
-    color: white;
+  margin-top: 56px;
+  padding: 24px 16px;
+  text-align: center;
+  background: var(--brand-dark);
+  color: var(--secondary);
+  border-top: 4px solid var(--secondary);
 }
 
-/* Mobile */
-@media (max-width: 600px) {
-    .brand h1 {
-        font-size: 17px;
-    }
-
-    .logo {
-        width: 48px;
-        height: 48px;
-    }
-
-    nav ul {
-        gap: 15px;
-        font-size: 14px;
-    }
-
-    main {
-        width: 94%;
-    }
-
-    main section {
-        padding: 18px;
-    }
-
-    .splash h1 {
-        font-size: 19px;
-    }
-
-    th, td {
-        padding: 8px;
-        font-size: 13px;
-    }
+footer p {
+  margin: 0;
+  letter-spacing: 0.03em;
 }
+
+/* ---------- Small screens ---------- */
+@media (max-width: 480px) {
+  .logo {
+    width: 52px;
+    height: 52px;
+  }
+
+  .post-form {
+    padding: 18px;
+  }
+
+  th, td {
+    padding: 10px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+
+
+/* The .meta line stayed gray because of SPECIFICITY.
+   .meta (one class, 0,1,0) beats p (one element, 0,0,1) even though
+   p comes later in the file. Order only matters when specificity is
+   equal, and inherited values lose to any rule that targets the
+   element itself. */

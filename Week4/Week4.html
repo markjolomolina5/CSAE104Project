@@ -1,219 +1,151 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PINMILAPIL NATIONAL HIGH SCHOOL</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="app.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PINMILAPIL NATIONAL HIGH SCHOOL</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <!-- Splash Screen -->
-    <section id="splash" class="splash">
-    <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10"
-        alt="School Logo"
-        class="splash-logo"
-    >
-
-    <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
-
+  <!-- SPLASH SCREEN (2 seconds, CSS only) -->
+  <div id="splash" class="splash" role="status" aria-label="Loading">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10" alt="Pinmilapil National High School logo" class="splash-logo" width="96" height="96">
+    <p class="splash-name">PINMILAPIL NATIONAL HIGH SCHOOL</p>
     <div class="loader"></div>
+  </div>
 
-    <p>Welcome to our School Notice Board</p>
-</section>
-
-    <!-- Header -->
-    <header>
-        <div class="brand">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10"
-                 alt="School Logo" class="logo">
-            <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
-        </div>
-
-        <nav>
-            <ul>
-                <li><a href="#notices">Notices</a></li>
-                <li><a href="#deadlines">Deadlines</a></li>
-                <li><a href="#submit">Post a Notice</a></li>
-                <li><a href="#" id="navLogin" class="nav-login">Login</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-
-        <section id="notices">
-            <h2>School Notices</h2>
-            <div id="noticeList">
-
-                <article class="notice">
-                    <h3>Enrolment Schedule Released</h3>
-                    <p class="meta">14 November 2026 · <span class="tag">Academic</span></p>
-                    <p>The enrolment schedule for next term is now available. Check your assigned date and time before the deadline.</p>
-                </article>
-
-                <article class="notice">
-                    <h3>Library Extended Hours During Finals</h3>
-                    <p class="meta">13 November 2026 · <span class="tag">Academic</span></p>
-                    <p>The library will stay open until 10 PM on weekdays during finals week. Bring your school ID.</p>
-                </article>
-
-                <article class="notice">
-                    <h3>Computer Lab Maintenance on Saturday</h3>
-                    <p class="meta">12 November 2026 · <span class="tag">General</span></p>
-                    <p>The computer laboratories will be closed this Saturday for system updates. Regular schedules resume on Monday.</p>
-                </article>
-
-            </div>
-        </section>
-
-        <!-- Post Notice -->
-        <section id="submit">
-            <h2>Post a Notice</h2>
-
-            <form id="noticeForm">
-                <p>
-                    <label for="title">Notice Title</label>
-                    <input type="text" id="title" maxlength="100" required>
-                </p>
-
-                <p>
-                    <label for="category">Category</label>
-                    <select id="category">
-                        <option>Academic</option>
-                        <option>Event</option>
-                        <option>General</option>
-                    </select>
-                </p>
-
-                <p>
-                    <label for="date">Date</label>
-                    <input type="date" id="date" required>
-                </p>
-
-                <p>
-                    <label for="message">Message</label>
-                    <textarea id="message" rows="4" required></textarea>
-                </p>
-
-                <p>
-                    <label for="noticeEmail">Your Email</label>
-                    <input type="email" id="noticeEmail" required>
-                </p>
-
-                <button type="submit">Post Notice</button>
-                <p id="noticeMsg" class="message" role="status"></p>
-            </form>
-        </section>
-
-        <!-- Deadlines -->
-        <section id="deadlines">
-            <h2>Upcoming Deadlines</h2>
-
-            <table>
-                <caption>School Activities and Deadlines</caption>
-                <thead>
-                    <tr>
-                        <th>Activity</th>
-                        <th>Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Enrolment Ends</td>
-                        <td>20 January</td>
-                    </tr>
-                    <tr>
-                        <td>Programming Contest Registration</td>
-                        <td>25 January</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-    </main>
-
-    <!-- Authentication Modal -->
-    <div id="authModal" class="modal-backdrop hidden">
-        <div class="modal-card">
-
-            <button id="closeModal" class="close-btn" type="button">&times;</button>
-
-            <!-- Login -->
-            <form id="logForm" class="auth-form">
-                <h2>Log In</h2>
-
-                <p>
-                    <label for="logEmail">Email</label>
-                    <input id="logEmail" type="email" required>
-                </p>
-
-                <p>
-                    <label for="logPassword">Password</label>
-                    <input id="logPassword" type="password" required>
-                </p>
-
-                <button type="submit">Log In</button>
-                <p id="logMsg" class="message"></p>
-
-                <p class="auth-foot">
-                    No account yet?
-                    <a href="#" id="switchToRegister">Register</a>
-                </p>
-            </form>
-
-            <!-- Registration -->
-            <form id="regForm" class="auth-form hidden">
-                <h2>Create Account</h2>
-
-                <p>
-                    <label for="regName">Full Name</label>
-                    <input id="regName" type="text" required>
-                </p>
-
-                <p>
-                    <label for="regEmail">Email</label>
-                    <input id="regEmail" type="email" required>
-                </p>
-
-                <p>
-                    <label for="regPassword">Password</label>
-                    <input id="regPassword" type="password" minlength="8" required>
-                </p>
-
-                <p>
-                    <label for="regConfirm">Confirm Password</label>
-                    <input id="regConfirm" type="password" minlength="8" required>
-                </p>
-
-                <button type="submit">Register</button>
-                <p id="regMsg" class="message"></p>
-
-                <p class="auth-foot">
-                    Already registered?
-                    <a href="#" id="switchToLogin">Log In</a>
-                </p>
-            </form>
-
-            <!-- Welcome -->
-            <div id="welcomeView" class="auth-form hidden welcome">
-                <h2 id="welcomeText">Welcome!</h2>
-                <p>You are successfully logged in.</p>
-                <button id="logoutBtn" type="button">Log Out</button>
-            </div>
-
-        </div>
+  <header>
+    <div class="brand">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10" alt="Pinmilapil National High School logo" class="logo" width="56" height="56">
+      <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
     </div>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#notices">Notices</a></li>
+        <li><a href="#deadlines">Deadlines</a></li>
+        <li><a href="#submit">Post a notice</a></li>
+        <li id="openLogin"><button type="button" class="nav-link">Login</button></li>
+        <li id="userGreeting" class="greeting hidden"></li>
+        <li id="logout" class="hidden"><button type="button" class="nav-link">Log out</button></li>
+        <li><button type="button" id="themeToggle" class="nav-link">Dark</button></li>
+      </ul>
+    </nav>
+  </header>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 PINMILAPIL NATIONAL HIGH SCHOOL</p>
-        <p>School Notice Board</p>
-    </footer>
+  <main>
+    <section id="notices">
+      <h2>Notices</h2>
 
+      <article class="notice">
+        <h3>Enrolment Schedule Released</h3>
+        <p class="meta">
+          <time datetime="2026-11-14">14 November 2026</time> · <span class="tag">Academic</span>
+        </p>
+        <p>The enrolment schedule for next term is now available. Check your assigned date and time before the deadline.</p>
+      </article>
+
+      <article class="notice">
+        <h3>Library Extended Hours During Finals</h3>
+        <p class="meta">
+          <time datetime="2026-11-13">13 November 2026</time> · <span class="tag">Academic</span>
+        </p>
+        <p>The library will stay open until 10 PM on weekdays during finals week. Bring your school ID at the entrance.</p>
+      </article>
+
+      <article class="notice">
+        <h3>Computer Lab Maintenance on Saturday</h3>
+        <p class="meta">
+          <time datetime="2026-11-12">12 November 2026</time> · <span class="tag">General</span>
+        </p>
+        <p>The computer laboratories will be closed this Saturday for system updates. Regular schedules resume on Monday.</p>
+      </article>
+    </section>
+
+    <section id="submit">
+      <h2>Post a notice</h2>
+      <form action="#" method="post" class="post-form">
+        <p>
+          <label for="title">Title</label><br>
+          <input type="text" id="title" name="title" required maxlength="100">
+        </p>
+        <p>
+          <label for="category">Category</label><br>
+          <select id="category" name="category">
+            <option value="academic">Academic</option>
+            <option value="event">Event</option>
+            <option value="general">General</option>
+          </select>
+        </p>
+        <p>
+          <label for="date">Date</label><br>
+          <input type="date" id="date" name="date">
+        </p>
+        <p>
+          <label for="message">Message</label><br>
+          <textarea id="message" name="message" rows="4" required></textarea>
+        </p>
+        <p>
+          <label for="email">Your email</label><br>
+          <input type="email" id="email" name="email" required>
+        </p>
+        <button type="submit">Post notice</button>
+      </form>
+    </section>
+
+    <section id="deadlines">
+      <h2>Upcoming deadlines</h2>
+
+      <h3>Categories</h3>
+      <ul>
+        <li>Academic</li>
+        <li>Event</li>
+        <li>General</li>
+      </ul>
+
+      <table>
+        <caption>Deadlines this month</caption>
+        <thead>
+          <tr><th scope="col">Activity</th><th scope="col">Date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Enrolment ends</td><td>20 January</td></tr>
+          <tr><td>Programming contest registration</td><td>25 January</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 PINMILAPIL NATIONAL HIGH SCHOOL</p>
+  </footer>
+
+  <!-- LOGIN POPUP (Register is a choice inside it) -->
+  <div id="authModal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Account">
+    <div class="modal-box">
+      <button type="button" id="closeModal" class="close" aria-label="Close">&times;</button>
+
+      <form id="logForm" class="auth-form">
+        <h2>Log in</h2>
+        <input name="email" type="email" placeholder="Email" required>
+        <input name="password" type="password" placeholder="Password" required>
+        <button type="submit">Log in</button>
+        <p id="logMsg" class="message"></p>
+        <a href="#" id="toRegister" class="switch">Don't have an account? <strong>Register</strong></a>
+      </form>
+
+      <form id="regForm" class="auth-form hidden">
+        <h2>Create account</h2>
+        <input name="name" placeholder="Name" required>
+        <input name="email" type="email" placeholder="Email" required>
+        <input name="password" type="password" placeholder="Password (8+ characters)" required>
+        <input name="confirm" type="password" placeholder="Confirm password" required>
+        <button type="submit">Register</button>
+        <p id="regMsg" class="message"></p>
+        <a href="#" id="toLogin" class="switch">I have an account</a>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
