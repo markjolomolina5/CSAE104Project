@@ -2,18 +2,15 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     // Splash Screen
-    function hideSplashScreen() {
+   document.addEventListener("DOMContentLoaded", function () {
     const splash = document.getElementById("splash");
 
     if (!splash) return;
 
-    splash.classList.add("hidden");
-
-    setTimeout(() => {
-        splash.style.display = "none";
-    }, 450);
-}
-
+    setTimeout(function () {
+        splash.remove();
+    }, 1000);
+});
 window.addEventListener("load", function () {
     setTimeout(hideSplashScreen, 1000);
 });
