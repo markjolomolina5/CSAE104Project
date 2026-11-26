@@ -26,6 +26,28 @@ header {
   padding: 16px 24px;
 }
 
+/* Logo on the left, school name on the right */
+.brand {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.brand h1 {
+  margin: 0;
+}
+
+.logo {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: 50%;
+  background: var(--surface);
+}
+
 main {
   max-width: 720px;
   margin: 24px auto;
@@ -89,4 +111,3 @@ button:hover { background: #163b69; }
    p comes later in the file. Order only matters when specificity is
    equal, and inherited values lose to any rule that targets the
    element itself. */
-
