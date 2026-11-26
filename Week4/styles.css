@@ -1,0 +1,139 @@
+/* ================= Splash, login, register, dark mode ================= */
+
+/* ---------- Screens ---------- */
+.screen.hidden { display: none; }
+
+/* ---------- Splash (2 seconds) ---------- */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  padding: 0 16px;
+  text-align: center;
+  color: var(--secondary);
+  background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 55%, var(--brand-light) 100%);
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.splash.hidden { opacity: 0; visibility: hidden; }
+
+.splash .logo { width: 96px; height: 96px; }
+
+.splash h1 {
+  margin: 0;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(1.25rem, 4vw + 0.5rem, 2rem);
+  letter-spacing: 0.04em;
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(229, 211, 175, 0.3);
+  border-top-color: var(--secondary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Login button in the nav ---------- */
+nav a.nav-login {
+  background: var(--secondary);
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+nav a.nav-login:hover,
+nav a.nav-login:focus-visible { background: #ffffff; }
+
+/* ---------- Login / Register / Welcome ---------- */
+.auth {
+  min-height: 60vh;
+  padding: 32px 20px 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.card {
+  width: min(90vw, 380px);
+  text-align: left;
+}
+
+.card button { width: 100%; }
+
+.card .message {
+  min-height: 1.3em;
+  margin: 12px 0 0;
+  color: #c92a2a;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Register / Log in choice: lower left of the card */
+.card .auth-foot {
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  text-align: left;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.auth-foot a {
+  color: var(--brand);
+  font-weight: 700;
+}
+
+/* ---------- Theme button (bottom right, on every screen) ---------- */
+.theme {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 50;
+  padding: 8px 20px;
+  border: 2px solid var(--secondary);
+}
+
+/* ---------- Dark mode: new values for the same variables ---------- */
+[data-theme="dark"] {
+  --page: #1c1416;
+  --surface: #2a1d20;
+  --text: #f4ece0;
+  --muted: #bfaeb0;
+  --border: #4a3538;
+  --brand-soft: #3b2327;
+  color-scheme: dark;
+}
+
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] label { color: var(--secondary); }
+
+[data-theme="dark"] h2::after { background: var(--secondary); }
+
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea { background: var(--page); }
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] textarea:focus { background: var(--surface); }
+
+[data-theme="dark"] tbody tr:nth-child(even) { background: #33242a; }
+[data-theme="dark"] tbody tr:hover { background: var(--brand-soft); }
+[data-theme="dark"] .tag,
+[data-theme="dark"] .auth-foot a { color: var(--secondary); }
+[data-theme="dark"] .card .message { color: #ff8787; }
+[data-theme="dark"] button:focus-visible { outline-color: var(--secondary); }
+
+@media (max-width: 480px) {
+  .splash .logo { width: 80px; height: 80px; }
+}

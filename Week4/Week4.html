@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PINMILAPIL NATIONAL HIGH SCHOOL</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .brand h1 {
+      margin: 0;
+      font-family: "Times New Roman", Times, serif;
+      font-size: clamp(1.25rem, 2.8vw + 0.6rem, 2rem);
+    }
+    .logo { flex-shrink: 0; object-fit: contain; border-radius: 50%; background: #ffffff; }
+  </style>
+</head>
+<body>
+  <button id="themeToggle" class="theme" type="button">Dark</button>
+
+  <!-- Splash screen: shows for 2 seconds -->
+  <section id="splash" class="splash" aria-label="Loading">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10" alt="Pinmilapil National High School logo" class="logo" width="96" height="96">
+    <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
+    <div class="loader"></div>
+  </section>
+
+  <header>
+    <div class="brand">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10" alt="Pinmilapil National High School logo" class="logo" width="56" height="56">
+      <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
+    </div>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#notices">Notices</a></li>
+        <li><a href="#deadlines">Deadlines</a></li>
+        <li><a href="#submit">Post a notice</a></li>
+        <li><a href="#login" id="navLogin" class="nav-login">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Home: your original notice board -->
+  <main id="home" class="screen">
+    <section id="notices">
+      <h2>Notices</h2>
+
+      <article class="notice">
+        <h3>Enrolment Schedule Released</h3>
+        <p class="meta">
+          <time datetime="2026-11-14">14 November 2026</time> · <span class="tag">Academic</span>
+        </p>
+        <p>The enrolment schedule for next term is now available. Check your assigned date and time before the deadline.</p>
+      </article>
+
+      <article class="notice">
+        <h3>Library Extended Hours During Finals</h3>
+        <p class="meta">
+          <time datetime="2026-11-13">13 November 2026</time> · <span class="tag">Academic</span>
+        </p>
+        <p>The library will stay open until 10 PM on weekdays during finals week. Bring your school ID at the entrance.</p>
+      </article>
+
+      <article class="notice">
+        <h3>Computer Lab Maintenance on Saturday</h3>
+        <p class="meta">
+          <time datetime="2026-11-12">12 November 2026</time> · <span class="tag">General</span>
+        </p>
+        <p>The computer laboratories will be closed this Saturday for system updates. Regular schedules resume on Monday.</p>
+      </article>
+    </section>
+
+    <section id="submit">
+      <h2>Post a notice</h2>
+      <form action="#" method="post">
+        <p>
+          <label for="title">Title</label><br>
+          <input type="text" id="title" name="title" required maxlength="100">
+        </p>
+        <p>
+          <label for="category">Category</label><br>
+          <select id="category" name="category">
+            <option value="academic">Academic</option>
+            <option value="event">Event</option>
+            <option value="general">General</option>
+          </select>
+        </p>
+        <p>
+          <label for="date">Date</label><br>
+          <input type="date" id="date" name="date">
+        </p>
+        <p>
+          <label for="message">Message</label><br>
+          <textarea id="message" name="message" rows="4" required></textarea>
+        </p>
+        <p>
+          <label for="email">Your email</label><br>
+          <input type="email" id="email" name="email" required>
+        </p>
+        <button type="submit">Post notice</button>
+      </form>
+    </section>
+
+    <section id="deadlines">
+      <h2>Upcoming deadlines</h2>
+
+      <h3>Categories</h3>
+      <ul>
+        <li>Academic</li>
+        <li>Event</li>
+        <li>General</li>
+      </ul>
+
+      <table>
+        <caption>Deadlines this month</caption>
+        <thead>
+          <tr><th scope="col">Activity</th><th scope="col">Date</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Enrolment ends</td><td>20 January</td></tr>
+          <tr><td>Programming contest registration</td><td>25 January</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <!-- Login -->
+  <section id="login" class="screen auth hidden">
+    <form id="logForm" class="card">
+      <h2>Log in</h2>
+      <p>
+        <label for="logEmail">Email</label><br>
+        <input id="logEmail" name="email" type="email" required>
+      </p>
+      <p>
+        <label for="logPassword">Password</label><br>
+        <input id="logPassword" name="password" type="password" required>
+      </p>
+      <button type="submit">Log in</button>
+      <p id="logMsg" class="message" role="alert"></p>
+      <p class="auth-foot">No account yet? <a href="#register" id="toRegister">Register</a></p>
+    </form>
+  </section>
+
+  <!-- Register -->
+  <section id="register" class="screen auth hidden">
+    <form id="regForm" class="card">
+      <h2>Create account</h2>
+      <p>
+        <label for="regName">Name</label><br>
+        <input id="regName" name="name" required>
+      </p>
+      <p>
+        <label for="regEmail">Email</label><br>
+        <input id="regEmail" name="email" type="email" required>
+      </p>
+      <p>
+        <label for="regPassword">Password</label><br>
+        <input id="regPassword" name="password" type="password" required>
+      </p>
+      <p>
+        <label for="regConfirm">Confirm password</label><br>
+        <input id="regConfirm" name="confirm" type="password" required>
+      </p>
+      <button type="submit">Register</button>
+      <p id="regMsg" class="message" role="alert"></p>
+      <p class="auth-foot">Already registered? <a href="#login" id="toLogin">Log in</a></p>
+    </form>
+  </section>
+
+  <!-- Welcome -->
+  <section id="welcome" class="screen auth hidden">
+    <h2 id="welcomeText"></h2>
+    <button id="logout" type="button">Log out</button>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 PINMILAPIL NATIONAL HIGH SCHOOL</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
