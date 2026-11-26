@@ -1,294 +1,267 @@
 
-document.addEventListener("DOMContentLoaded", function () {
+const splash = document.querySelector("#splash");
+const navLogin = document.querySelector("#navLogin");
+const authModal = document.querySelector("#authModal");
+const closeModal = document.querySelector("#closeModal");
 
-    // SPLASH SCREEN: hide after 1.5 seconds
-    const splash = document.getElementById("splash-screen");
+const logForm = document.querySelector("#logForm");
+const regForm = document.querySelector("#regForm");
+const welcomeView = document.querySelector("#welcomeView");
 
+const logMsg = document.querySelector("#logMsg");
+const regMsg = document.querySelector("#regMsg");
+const hello = document.querySelector("#welcomeText");
+
+const switchToRegister = document.querySelector("#switchToRegister");
+const switchToLogin = document.querySelector("#switchToLogin");
+const logoutBtn = document.querySelector("#logoutBtn");
+
+// Safe storage with fallback
+const memory = {};
+
+const store = {
+    get(key) {
+        try {
+            return localStorage.getItem(key) ?? memory[key] ?? null;
+        } catch {
+            return memory[key] ?? null;
+        }
+    },
+
+    set(key, value) {
+        memory[key] = value;
+
+        try {
+            localStorage.setItem(key, value);
+        } catch {
+            // Use memory storage as fallback
+        }
+    }
+};
+
+// Splash screen
+const hideSplash = () => {
     if (splash) {
-        setTimeout(function () {
-            splash.classList.add("hidden");
-        }, 1500);
+        splash.classList.add("hidden");
+    }
+};
+
+setTimeout(hideSplash, 2000);
+
+if (splash) {
+    splash.addEventListener("click", hideSplash);
+}
+
+// Modal controls
+const closeModalWindow = () => {
+    if (authModal) {
+        authModal.classList.add("hidden");
+    }
+};
+
+const showLoginForm = () => {
+    logForm?.classList.remove("hidden");
+    regForm?.classList.add("hidden");
+    welcomeView?.classList.add("hidden");
+};
+
+const showRegisterForm = () => {
+    regForm?.classList.remove("hidden");
+    logForm?.classList.add("hidden");
+    welcomeView?.classList.add("hidden");
+};
+
+const showWelcome = (name) => {
+    if (hello) {
+        hello.textContent = `Welcome, ${name}!`;
     }
 
-    // CURRENT YEAR
-    document.getElementById("current-year").textContent =
-        new Date().getFullYear();
+    welcomeView?.classList.remove("hidden");
+    logForm?.classList.add("hidden");
+    regForm?.classList.add("hidden");
+};
 
-    // ELEMENTS
-    const authButton = document.getElementById("auth-button");
-    const authModal = document.getElementById("auth-modal");
-    const closeModal = document.getElementById("close-modal");
+const openModal = (view = "login") => {
+    if (!authModal) return;
 
-    const loginSection = document.getElementById("login-section");
-    const registerSection = document.getElementById("register-section");
+    authModal.classList.remove("hidden");
 
-    const showRegister = document.getElementById("show-register");
-    const showLogin = document.getElementById("show-login");
+    if (logMsg) logMsg.textContent = "";
+    if (regMsg) regMsg.textContent = "";
 
-    const loginForm = document.getElementById("login-form");
-    const registerForm = document.getElementById("register-form");
-    const noticeForm = document.getElementById("notice-form");
+    const loggedUser = store.get("currentUser");
 
-    const authMessage = document.getElementById("auth-message");
-    const postMessage = document.getElementById("post-message");
-
-    const noticeList = document.getElementById("notice-list");
-
-    // STORAGE HELPERS
-    function getUsers() {
-        try {
-            return JSON.parse(localStorage.getItem("schoolUsers")) || [];
-        } catch {
-            return [];
-        }
-    }
-
-    function getNotices() {
-        try {
-            return JSON.parse(localStorage.getItem("schoolNotices")) || [];
-        } catch {
-            return [];
-        }
-    }
-
-    function getCurrentUser() {
-        return localStorage.getItem("schoolCurrentUser");
-    }
-
-    function saveUsers(users) {
-        localStorage.setItem("schoolUsers", JSON.stringify(users));
-    }
-
-    function saveNotices(notices) {
-        localStorage.setItem("schoolNotices", JSON.stringify(notices));
-    }
-
-    // AUTH MODAL
-    function openModal() {
-        authMessage.textContent = "";
-        authModal.classList.add("show");
-    }
-
-    function closeAuthModal() {
-        authModal.classList.remove("show");
-    }
-
-    function showLoginForm() {
-        loginSection.classList.remove("hidden");
-        registerSection.classList.add("hidden");
-        authMessage.textContent = "";
-    }
-
-    function showRegisterForm() {
-        registerSection.classList.remove("hidden");
-        loginSection.classList.add("hidden");
-        authMessage.textContent = "";
-    }
-
-    authButton.addEventListener("click", function () {
-        if (getCurrentUser()) {
-            logout();
-        } else {
-            showLoginForm();
-            openModal();
-        }
-    });
-
-    closeModal.addEventListener("click", closeAuthModal);
-
-    authModal.addEventListener("click", function (event) {
-        if (event.target === authModal) {
-            closeAuthModal();
-        }
-    });
-
-    showRegister.addEventListener("click", function (event) {
-        event.preventDefault();
+    if (loggedUser) {
+        showWelcome(loggedUser);
+    } else if (view === "register") {
         showRegisterForm();
-    });
-
-    showLogin.addEventListener("click", function (event) {
-        event.preventDefault();
+    } else {
         showLoginForm();
-    });
+    }
+};
 
-    // REGISTER
-    registerForm.addEventListener("submit", function (event) {
-        event.preventDefault();
+// Navbar login button
+navLogin?.addEventListener("click", (e) => {
+    e.preventDefault();
 
-        const username = document
-            .getElementById("register-username")
-            .value.trim();
+    const loggedUser = store.get("currentUser");
 
-        const password = document
-            .getElementById("register-password")
-            .value;
+    openModal(loggedUser ? "welcome" : "login");
+});
 
-        if (username.length < 3 || password.length < 6) {
-            authMessage.textContent =
-                "Username must have 3 characters and password 6 characters minimum.";
-            return;
+// Close modal
+closeModal?.addEventListener("click", closeModalWindow);
+
+authModal?.addEventListener("click", (e) => {
+    if (e.target === authModal) {
+        closeModalWindow();
+    }
+});
+
+// Switch between login and registration
+switchToRegister?.addEventListener("click", (e) => {
+    e.preventDefault();
+    showRegisterForm();
+});
+
+switchToLogin?.addEventListener("click", (e) => {
+    e.preventDefault();
+    showLoginForm();
+});
+
+// Get registered users
+const getUsers = () => {
+    try {
+        const users = JSON.parse(store.get("users") || "[]");
+        return Array.isArray(users) ? users : [];
+    } catch {
+        return [];
+    }
+};
+
+// Registration
+regForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (regMsg) {
+        regMsg.textContent = "";
+    }
+
+    const f = regForm.elements;
+
+    try {
+        const name = f.name.value.trim();
+        const email = f.email.value.trim().toLowerCase();
+        const password = f.password.value;
+        const confirm = f.confirm.value;
+
+        if (!name) {
+            throw new Error("Please enter your name.");
         }
 
-        const users = getUsers();
-
-        const exists = users.some(function (user) {
-            return user.username.toLowerCase() === username.toLowerCase();
-        });
-
-        if (exists) {
-            authMessage.textContent = "Username already exists.";
-            return;
+        if (password.length < 8) {
+            throw new Error("Password must be at least 8 characters.");
         }
 
-        users.push({
-            username: username,
-            password: password
-        });
+        if (password !== confirm) {
+            throw new Error("Passwords do not match.");
+        }
 
-        saveUsers(users);
+        const currentUsers = getUsers();
 
-        authMessage.textContent =
-            "Registration successful! You can now log in.";
+        if (currentUsers.some((u) => u.email === email)) {
+            throw new Error("Email already registered.");
+        }
 
-        registerForm.reset();
+        const users = [
+            ...currentUsers,
+            {
+                name,
+                email,
+                password
+            }
+        ];
+
+        store.set("users", JSON.stringify(users));
+
+        regForm.reset();
         showLoginForm();
-    });
 
-    // LOGIN
-    loginForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const username = document
-            .getElementById("login-username")
-            .value.trim();
-
-        const password = document
-            .getElementById("login-password")
-            .value;
-
-        const users = getUsers();
-
-        const user = users.find(function (item) {
-            return item.username.toLowerCase() === username.toLowerCase()
-                && item.password === password;
-        });
-
-        if (!user) {
-            authMessage.textContent = "Incorrect username or password.";
-            return;
+        if (logMsg) {
+            logMsg.style.color = "var(--brand)";
+            logMsg.textContent = "Account created! Please log in.";
         }
 
-        localStorage.setItem("schoolCurrentUser", user.username);
-
-        loginForm.reset();
-        authMessage.textContent = "";
-
-        closeAuthModal();
-        updateAuthButton();
-
-        alert("Welcome, " + user.username + "!");
-    });
-
-    // LOGOUT
-    function logout() {
-        localStorage.removeItem("schoolCurrentUser");
-        updateAuthButton();
-        alert("You have successfully logged out.");
-    }
-
-    // UPDATE LOGIN BUTTON
-    function updateAuthButton() {
-        const username = getCurrentUser();
-
-        if (username) {
-            authButton.textContent = "Logout (" + username + ")";
-        } else {
-            authButton.textContent = "Login / Register";
+    } catch (error) {
+        if (regMsg) {
+            regMsg.style.color = "#c92a2a";
+            regMsg.textContent = error.message;
         }
     }
+});
 
-    // DISPLAY NOTICES
-    function renderNotices() {
-        const notices = getNotices();
+// Login
+logForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-        noticeList.innerHTML = "";
-
-        if (notices.length === 0) {
-            noticeList.innerHTML =
-                '<p class="empty-message">No announcements yet.</p>';
-            return;
-        }
-
-        notices.slice().reverse().forEach(function (notice) {
-            const card = document.createElement("article");
-            card.className = "notice-card";
-
-            const title = document.createElement("h3");
-            title.textContent = notice.title;
-
-            const content = document.createElement("p");
-            content.textContent = notice.content;
-
-            const date = document.createElement("p");
-            date.className = "notice-date";
-            date.textContent = "Posted by " + notice.author +
-                " • " + notice.date;
-
-            card.appendChild(title);
-            card.appendChild(content);
-            card.appendChild(date);
-
-            noticeList.appendChild(card);
-        });
+    if (logMsg) {
+        logMsg.style.color = "#c92a2a";
+        logMsg.textContent = "";
     }
 
-    // POST NOTICE
-    noticeForm.addEventListener("submit", function (event) {
-        event.preventDefault();
+    const f = logForm.elements;
 
-        const currentUser = getCurrentUser();
+    const email = f.email.value.trim().toLowerCase();
+    const password = f.password.value;
 
-        if (!currentUser) {
-            postMessage.textContent =
-                "Please log in before posting an announcement.";
-            postMessage.style.color = "red";
-            return;
-        }
+    const users = getUsers();
 
-        const title = document.getElementById("notice-title").value.trim();
-        const content = document.getElementById("notice-content").value.trim();
+    const user = users.find((u) => u.email === email);
 
-        if (!title || !content) {
-            postMessage.textContent = "Please complete all fields.";
-            postMessage.style.color = "red";
-            return;
-        }
+    if (!user) {
+        logMsg.textContent = "No account found with this email.";
+        return;
+    }
 
-        const notices = getNotices();
+    if (user.password !== password) {
+        logMsg.textContent = "Incorrect password.";
+        return;
+    }
 
-        notices.push({
-            title: title,
-            content: content,
-            author: currentUser,
-            date: new Date().toLocaleString()
-        });
+    store.set("currentUser", user.name);
 
-        saveNotices(notices);
+    logForm.reset();
+    showWelcome(user.name);
 
-        noticeForm.reset();
-        renderNotices();
+    if (navLogin) {
+        navLogin.textContent = user.name;
+    }
+});
 
-        postMessage.textContent = "Announcement published successfully!";
-        postMessage.style.color = "green";
+// Logout
+logoutBtn?.addEventListener("click", () => {
+    store.set("currentUser", "");
 
-        setTimeout(function () {
-            postMessage.textContent = "";
-        }, 3000);
-    });
+    if (navLogin) {
+        navLogin.textContent = "Login";
+    }
 
-    // INITIALIZE
-    updateAuthButton();
-    renderNotices();
+    showLoginForm();
+    closeModalWindow();
+});
 
+// Close modal using Escape key
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        closeModalWindow();
+    }
+});
+
+// Check login state when page loads
+document.addEventListener("DOMContentLoaded", () => {
+    const loggedUser = store.get("currentUser");
+
+    if (loggedUser && navLogin) {
+        navLogin.textContent = loggedUser;
+    }
 });

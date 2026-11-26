@@ -4,148 +4,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinmilapil National High School | Notice Board</title>
+    <title>PINMILAPIL NATIONAL HIGH SCHOOL</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <!-- Splash Screen -->
-    <div id="splash-screen">
-        <div class="loader"></div>
+    <section id="splash" class="splash">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10"
+             alt="School Logo" class="splash-logo">
         <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
-        <p>Online Notice Board</p>
-    </div>
+        <div class="loader"></div>
+        <p>Welcome to our School Notice Board</p>
+    </section>
 
     <!-- Header -->
     <header>
-        <div class="header-content">
-            <div>
-                <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
-                <p>Official Online Notice Board</p>
-            </div>
-            <button id="auth-button" class="login-btn">Login / Register</button>
+        <div class="brand">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaNO6EZSB5v_lxug-3Jfk44-GjUW7NED9FfS60PCPKbBjJE9s5r6VWk50&s=10"
+                 alt="School Logo" class="logo">
+
+            <h1>PINMILAPIL NATIONAL HIGH SCHOOL</h1>
         </div>
+
+        <nav>
+            <ul>
+                <li><a href="#notices">Notices</a></li>
+                <li><a href="#deadlines">Deadlines</a></li>
+                <li><a href="#submit">Post a Notice</a></li>
+                <li>
+                    <a href="#" id="navLogin" class="nav-login">Login</a>
+                </li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Navigation -->
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#notices">Notices</a>
-        <a href="#post">Post Notice</a>
-        <a href="#deadlines">Deadlines</a>
-    </nav>
-
     <!-- Main Content -->
-    <main id="home">
-
-        <section class="welcome-section">
-            <h2>Welcome to Our School Notice Board!</h2>
-            <p>Stay updated with the latest school announcements, activities, and important deadlines.</p>
-        </section>
+    <main>
 
         <!-- Notices -->
-        <section id="notices" class="section">
-            <h2>Latest Announcements</h2>
-            <div id="notice-list" class="notice-list">
-                <p class="empty-message">No announcements yet.</p>
+        <section id="notices">
+            <h2>School Notices</h2>
+            <div id="noticeList">
+
+                <article class="notice">
+                    <h3>Enrolment Schedule Released</h3>
+                    <p class="meta">
+                        14 November 2026 ·
+                        <span class="tag">Academic</span>
+                    </p>
+                    <p>
+                        The enrolment schedule for next term is now available.
+                        Check your assigned date and time before the deadline.
+                    </p>
+                </article>
+
+                <article class="notice">
+                    <h3>Library Extended Hours During Finals</h3>
+                    <p class="meta">
+                        13 November 2026 ·
+                        <span class="tag">Academic</span>
+                    </p>
+                    <p>
+                        The library will stay open until 10 PM on weekdays
+                        during finals week. Bring your school ID.
+                    </p>
+                </article>
+
+                <article class="notice">
+                    <h3>Computer Lab Maintenance on Saturday</h3>
+                    <p class="meta">
+                        12 November 2026 ·
+                        <span class="tag">General</span>
+                    </p>
+                    <p>
+                        The computer laboratories will be closed this Saturday
+                        for system updates. Regular schedules resume on Monday.
+                    </p>
+                </article>
+
             </div>
         </section>
 
         <!-- Post Notice -->
-        <section id="post" class="section">
-            <h2>Post an Announcement</h2>
+        <section id="submit">
+            <h2>Post a Notice</h2>
 
-            <form id="notice-form">
-                <label for="notice-title">Announcement Title</label>
-                <input type="text" id="notice-title" placeholder="Enter announcement title" required>
+            <form id="noticeForm">
 
-                <label for="notice-content">Announcement Details</label>
-                <textarea id="notice-content" rows="5" placeholder="Enter announcement details" required></textarea>
+                <p>
+                    <label for="title">Notice Title</label>
+                    <input type="text" id="title" name="title"
+                           maxlength="100" required>
+                </p>
 
-                <button type="submit">Publish Announcement</button>
+                <p>
+                    <label for="category">Category</label>
+                    <select id="category" name="category">
+                        <option value="Academic">Academic</option>
+                        <option value="Event">Event</option>
+                        <option value="General">General</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                </p>
+
+                <p>
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message"
+                              rows="4" required></textarea>
+                </p>
+
+                <p>
+                    <label for="noticeEmail">Your Email</label>
+                    <input type="email" id="noticeEmail"
+                           name="email" required>
+                </p>
+
+                <button type="submit">Post Notice</button>
+
+                <p id="noticeMsg" class="message" role="status"></p>
+
             </form>
-            <p id="post-message"></p>
         </section>
 
         <!-- Deadlines -->
-        <section id="deadlines" class="section">
-            <h2>Important School Deadlines</h2>
+        <section id="deadlines">
+            <h2>Upcoming Deadlines</h2>
 
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Activity</th>
-                            <th>Date</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>School Activities</td>
-                            <td>To be announced</td>
-                            <td>Check future announcements.</td>
-                        </tr>
-                        <tr>
-                            <td>Project Submission</td>
-                            <td>To be announced</td>
-                            <td>Follow your subject teacher's instructions.</td>
-                        </tr>
-                        <tr>
-                            <td>School Events</td>
-                            <td>To be announced</td>
-                            <td>Wait for official updates.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <table>
+                <caption>School Activities and Deadlines</caption>
+
+                <thead>
+                    <tr>
+                        <th>Activity</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Enrolment Ends</td>
+                        <td>20 January</td>
+                    </tr>
+
+                    <tr>
+                        <td>Programming Contest Registration</td>
+                        <td>25 January</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
 
     </main>
 
     <!-- Authentication Modal -->
-    <div id="auth-modal" class="modal">
-        <div class="modal-content">
-            <button id="close-modal" class="close-btn" aria-label="Close">&times;</button>
+    <div id="authModal" class="modal-backdrop hidden">
 
-            <div id="login-section">
-                <h2>Login</h2>
-                <form id="login-form">
-                    <label for="login-username">Username</label>
-                    <input type="text" id="login-username" required>
+        <div class="modal-card">
 
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" required>
+            <button id="closeModal" class="close-btn"
+                    type="button" aria-label="Close">&times;</button>
 
-                    <button type="submit">Login</button>
-                </form>
-                <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
-            </div>
+            <!-- Login Form -->
+            <form id="logForm" class="auth-form">
 
-            <div id="register-section" class="hidden">
+                <h2>Log In</h2>
+
+                <p>
+                    <label for="logEmail">Email</label>
+                    <input id="logEmail" name="email"
+                           type="email" required>
+                </p>
+
+                <p>
+                    <label for="logPassword">Password</label>
+                    <input id="logPassword" name="password"
+                           type="password" required>
+                </p>
+
+                <button type="submit">Log In</button>
+
+                <p id="logMsg" class="message" role="alert"></p>
+
+                <p class="auth-foot">
+                    No account yet?
+                    <a href="#" id="switchToRegister">Register</a>
+                </p>
+
+            </form>
+
+            <!-- Registration Form -->
+            <form id="regForm" class="auth-form hidden">
+
                 <h2>Create Account</h2>
-                <form id="register-form">
-                    <label for="register-username">Username</label>
-                    <input type="text" id="register-username" required minlength="3">
 
-                    <label for="register-password">Password</label>
-                    <input type="password" id="register-password" required minlength="6">
+                <p>
+                    <label for="regName">Full Name</label>
+                    <input id="regName" name="name"
+                           type="text" required>
+                </p>
 
-                    <button type="submit">Register</button>
-                </form>
-                <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+                <p>
+                    <label for="regEmail">Email</label>
+                    <input id="regEmail" name="email"
+                           type="email" required>
+                </p>
+
+                <p>
+                    <label for="regPassword">Password</label>
+                    <input id="regPassword" name="password"
+                           type="password" minlength="8" required>
+                </p>
+
+                <p>
+                    <label for="regConfirm">Confirm Password</label>
+                    <input id="regConfirm" name="confirm"
+                           type="password" minlength="8" required>
+                </p>
+
+                <button type="submit">Register</button>
+
+                <p id="regMsg" class="message" role="alert"></p>
+
+                <p class="auth-foot">
+                    Already registered?
+                    <a href="#" id="switchToLogin">Log In</a>
+                </p>
+
+            </form>
+
+            <!-- Welcome Screen -->
+            <div id="welcomeView" class="auth-form hidden welcome">
+
+                <h2 id="welcomeText">Welcome!</h2>
+
+                <p>You are successfully logged in.</p>
+
+                <button id="logoutBtn" type="button">Log Out</button>
+
             </div>
 
-            <p id="auth-message"></p>
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; <span id="current-year"></span> Pinmilapil National High School. All Rights Reserved.</p>
-        <p>Official Online Notice Board</p>
+        <p>&copy; 2026 PINMILAPIL NATIONAL HIGH SCHOOL</p>
+        <p>School Notice Board</p>
     </footer>
 
     <script src="app.js"></script>
+
 </body>
 </html>
