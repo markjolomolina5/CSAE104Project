@@ -1,272 +1,185 @@
+const splash = document.querySelector("#splash");
+const navLogin = document.querySelector("#navLogin");
+const authModal = document.querySelector("#authModal");
+const closeModal = document.querySelector("#closeModal");
+const logForm = document.querySelector("#logForm");
+const regForm = document.querySelector("#regForm");
+const welcomeView = document.querySelector("#welcomeView");
+const logMsg = document.querySelector("#logMsg");
+const regMsg = document.querySelector("#regMsg");
+const hello = document.querySelector("#welcomeText");
+const switchToRegister = document.querySelector("#switchToRegister");
+const switchToLogin = document.querySelector("#switchToLogin");
+const logoutBtn = document.querySelector("#logoutBtn");
 
-// PINMILAPIL NATIONAL HIGH SCHOOL
-// SCHOOL NOTICE BOARD
-
-// SPLASH SCREEN: HIDE AFTER 2 SECONDS
-const splash = document.getElementById("splash");
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    splash.classList.add("hidden");
-  }, 2000);
-});
-
-// GET HTML ELEMENTS
-const noticeList = document.getElementById("noticeList");
-const deadlineList = document.getElementById("deadlineList");
-const noticeForm = document.getElementById("noticeForm");
-const postReminder = document.getElementById("postReminder");
-
-const loginForm = document.getElementById("loginForm");
-const registerForm = document.getElementById("registerForm");
-
-const showRegister = document.getElementById("showRegister");
-const showLogin = document.getElementById("showLogin");
-
-const loginNav = document.getElementById("loginNav");
-const logoutBtn = document.getElementById("logoutBtn");
-const accountMessage = document.getElementById("accountMessage");
-
-// LOAD SAVED DATA
-let users = JSON.parse(localStorage.getItem("schoolUsers")) || [];
-
-let notices = JSON.parse(localStorage.getItem("schoolNotices")) || [
-  {
-    id: 1,
-    title: "Welcome to Our School Notice Board",
-    category: "Notice",
-    date: "2026-01-01",
-    description: "Welcome! Visit this page regularly for school announcements and updates."
+/* ---------- Safe storage with fallback ---------- */
+const memory = {};
+const store = {
+  get(key) {
+    try { return localStorage.getItem(key); }
+    catch { return memory[key] ?? null; }
   },
-  {
-    id: 2,
-    title: "Important School Reminder",
-    category: "Notice",
-    date: "2026-01-02",
-    description: "Please stay updated with your class announcements and school activities."
+  set(key, value) {
+    try { localStorage.setItem(key, value); }
+    catch { memory[key] = value; }
   },
-  {
-    id: 3,
-    title: "Submission of Requirements",
-    category: "Deadline",
-    date: "2026-01-15",
-    description: "Students are reminded to submit their required school documents."
-  }
-];
+};
 
-let currentUser = localStorage.getItem("schoolCurrentUser");
+/* ---------- Splash screen timer ---------- */
+const hideSplash = () => {
+  if (splash) splash.classList.add("hidden");
+};
+setTimeout(hideSplash, 2000);
+if (splash) splash.addEventListener("click", hideSplash);
 
-// SAVE DATA
-function saveUsers() {
-  localStorage.setItem("schoolUsers", JSON.stringify(users));
-}
-
-function saveNotices() {
-  localStorage.setItem("schoolNotices", JSON.stringify(notices));
-}
-
-// DISPLAY NOTICES AND DEADLINES
-function displayNotices() {
-  noticeList.innerHTML = "";
-  deadlineList.innerHTML = "";
-
-  const generalNotices = notices.filter(
-    notice => notice.category === "Notice"
-  );
-
-  const deadlines = notices.filter(
-    notice => notice.category === "Deadline"
-  );
-
-  if (generalNotices.length === 0) {
-    noticeList.innerHTML = "<p>No school notices available.</p>";
-  }
-
-  if (deadlines.length === 0) {
-    deadlineList.innerHTML = "<p>No upcoming deadlines available.</p>";
-  }
-
-  generalNotices.forEach(notice => {
-    noticeList.appendChild(createNoticeCard(notice));
-  });
-
-  deadlines.forEach(notice => {
-    deadlineList.appendChild(createNoticeCard(notice));
-  });
-}
-
-// CREATE NOTICE CARD
-function createNoticeCard(notice) {
-  const card = document.createElement("article");
-  card.className = "notice-card";
-
-  const category = document.createElement("span");
-  category.className = "category";
-  category.textContent = notice.category;
-
-  const title = document.createElement("h3");
-  title.textContent = notice.title;
-
-  const date = document.createElement("p");
-  date.className = "notice-date";
-  date.textContent = "Date: " + notice.date;
-
-  const description = document.createElement("p");
-  description.textContent = notice.description;
-
-  card.append(category, title, date, description);
-
-  return card;
-}
-
-// SHOW REGISTER FORM
-showRegister.addEventListener("click", function(event) {
-  event.preventDefault();
-
-  loginForm.classList.add("hidden");
-  registerForm.classList.remove("hidden");
-  accountMessage.textContent = "";
-});
-
-// SHOW LOGIN FORM
-showLogin.addEventListener("click", function(event) {
-  event.preventDefault();
-
-  registerForm.classList.add("hidden");
-  loginForm.classList.remove("hidden");
-  accountMessage.textContent = "";
-});
-
-// REGISTER ACCOUNT
-registerForm.addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  const username = document.getElementById("registerUsername").value.trim();
-  const password = document.getElementById("registerPassword").value;
-
-  if (username.length < 3) {
-    alert("Username must contain at least 3 characters.");
-    return;
-  }
-
-  if (users.some(user => user.username.toLowerCase() === username.toLowerCase())) {
-    alert("This username is already registered.");
-    return;
-  }
-
-  users.push({
-    username: username,
-    password: password
-  });
-
-  saveUsers();
-
-  registerForm.reset();
-  registerForm.classList.add("hidden");
-  loginForm.classList.remove("hidden");
-
-  accountMessage.textContent = "Registration successful! You can now log in.";
-});
-
-// LOGIN ACCOUNT
-loginForm.addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  const username = document.getElementById("loginUsername").value.trim();
-  const password = document.getElementById("loginPassword").value;
-
-  const user = users.find(
-    user =>
-      user.username.toLowerCase() === username.toLowerCase() &&
-      user.password === password
-  );
-
-  if (!user) {
-    alert("Incorrect username or password.");
-    return;
-  }
-
-  currentUser = user.username;
-  localStorage.setItem("schoolCurrentUser", currentUser);
-
-  loginForm.reset();
-  accountMessage.textContent = "Welcome, " + currentUser + "! You are logged in.";
-
-  updateLoginStatus();
-});
-
-// LOGOUT
-logoutBtn.addEventListener("click", function() {
-  localStorage.removeItem("schoolCurrentUser");
-  currentUser = null;
-
-  accountMessage.textContent = "You have successfully logged out.";
-
-  updateLoginStatus();
-});
-
-// UPDATE LOGIN DISPLAY
-function updateLoginStatus() {
-  if (currentUser) {
-    loginNav.textContent = "Logged in: " + currentUser;
-    loginNav.href = "#account";
-
-    logoutBtn.classList.remove("hidden");
-    noticeForm.classList.remove("hidden");
-    postReminder.classList.add("hidden");
-
-    loginForm.classList.add("hidden");
-    registerForm.classList.add("hidden");
+/* ---------- Floating Modal Controls ---------- */
+const openModal = (view = "login") => {
+  authModal.classList.remove("hidden");
+  logMsg.textContent = "";
+  regMsg.textContent = "";
+  
+  const loggedUser = store.get("currentUser");
+  if (loggedUser) {
+    showWelcome(loggedUser);
+  } else if (view === "register") {
+    showRegisterForm();
   } else {
-    loginNav.textContent = "Login";
-    loginNav.href = "#account";
-
-    logoutBtn.classList.add("hidden");
-    noticeForm.classList.add("hidden");
-    postReminder.classList.remove("hidden");
-
-    loginForm.classList.remove("hidden");
-    registerForm.classList.add("hidden");
+    showLoginForm();
   }
-}
+};
 
-// POST A NEW NOTICE
-noticeForm.addEventListener("submit", function(event) {
-  event.preventDefault();
+const closeModalWindow = () => {
+  authModal.classList.add("hidden");
+};
 
-  if (!currentUser) {
-    alert("Please log in first.");
-    return;
-  }
+const showLoginForm = () => {
+  logForm.classList.remove("hidden");
+  regForm.classList.add("hidden");
+  welcomeView.classList.add("hidden");
+};
 
-  const title = document.getElementById("noticeTitle").value.trim();
-  const category = document.getElementById("noticeCategory").value;
-  const date = document.getElementById("noticeDate").value;
-  const description = document.getElementById("noticeDescription").value.trim();
+const showRegisterForm = () => {
+  regForm.classList.remove("hidden");
+  logForm.classList.add("hidden");
+  welcomeView.classList.add("hidden");
+};
 
-  if (!title || !date || !description) {
-    alert("Please complete all fields.");
-    return;
-  }
+const showWelcome = (name) => {
+  hello.textContent = `Welcome, ${name}!`;
+  welcomeView.classList.remove("hidden");
+  logForm.classList.add("hidden");
+  regForm.classList.add("hidden");
+};
 
-  const newNotice = {
-    id: Date.now(),
-    title: title,
-    category: category,
-    date: date,
-    description: description
-  };
-
-  notices.unshift(newNotice);
-
-  saveNotices();
-  displayNotices();
-
-  noticeForm.reset();
-
-  alert("Your notice has been published successfully!");
+/* Open modal when clicking Login in navbar */
+navLogin.addEventListener("click", (e) => {
+  e.preventDefault();
+  const loggedUser = store.get("currentUser");
+  openModal(loggedUser ? "welcome" : "login");
 });
 
-// INITIALIZE WEBSITE
-displayNotices();
-updateLoginStatus();
+/* Close modal on X button or backdrop click */
+closeModal.addEventListener("click", closeModalWindow);
+authModal.addEventListener("click", (e) => {
+  if (e.target === authModal) closeModalWindow();
+});
+
+/* Switch views inside the modal */
+switchToRegister.addEventListener("click", (e) => {
+  e.preventDefault();
+  showRegisterForm();
+});
+
+switchToLogin.addEventListener("click", (e) => {
+  e.preventDefault();
+  showLoginForm();
+});
+
+/* ---------- Saved users helper ---------- */
+const getUsers = () => {
+  try { return JSON.parse(store.get("users")) ?? []; }
+  catch { return []; }
+};
+
+/* ---------- Register ---------- */
+if (regForm) {
+  regForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    regMsg.textContent = "";
+    const f = regForm.elements;
+    try {
+      if (f.password.value.length < 8)
+        throw new Error("Password must be at least 8 characters");
+      if (f.password.value !== f.confirm.value)
+        throw new Error("Passwords do not match");
+      
+      const email = f.email.value.trim().toLowerCase();
+      const currentUsers = getUsers();
+      
+      if (currentUsers.some((u) => u.email === email))
+        throw new Error("Email already registered");
+      
+      const users = [...currentUsers, {
+        name: f.name.value.trim(),
+        email,
+        password: f.password.value,
+      }];
+      
+      store.set("users", JSON.stringify(users));
+      regForm.reset();
+      
+      // Switch back to login view and show success message
+      showLoginForm();
+      logMsg.style.color = "var(--brand)";
+      logMsg.textContent = "Account created! Please log in.";
+    } catch (error) {
+      regMsg.style.color = "#c92a2a";
+      regMsg.textContent = error.message;
+    }
+  });
+}
+
+/* ---------- Login ---------- */
+if (logForm) {
+  logForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    logMsg.style.color = "#c92a2a";
+    logMsg.textContent = "";
+    
+    const f = logForm.elements;
+    const mail = f.email.value.trim().toLowerCase();
+    const password = f.password.value;
+    
+    const users = getUsers();
+    const user = users.find((u) => u.email === mail);
+    
+    if (!user) {
+      logMsg.textContent = "No account found with this email.";
+    } else if (user.password !== password) {
+      logMsg.textContent = "Incorrect password.";
+    } else {
+      store.set("currentUser", user.name);
+      logForm.reset();
+      showWelcome(user.name);
+      navLogin.textContent = user.name;
+    }
+  });
+}
+
+/* ---------- Logout ---------- */
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    store.set("currentUser", "");
+    navLogin.textContent = "Login";
+    showLoginForm();
+    closeModalWindow();
+  });
+}
+
+/* Check login state on page load */
+window.addEventListener("DOMContentLoaded", () => {
+  const loggedUser = store.get("currentUser");
+  if (loggedUser) {
+    navLogin.textContent = loggedUser;
+  }
+});
