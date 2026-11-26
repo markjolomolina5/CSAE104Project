@@ -1,7 +1,5 @@
-const root = document.documentElement;
 const screens = document.querySelectorAll(".screen");
 const splash = document.querySelector("#splash");
-const toggle = document.querySelector("#themeToggle");
 const regForm = document.querySelector("#regForm");
 const regMsg = document.querySelector("#regMsg");
 const logForm = document.querySelector("#logForm");
@@ -21,42 +19,40 @@ const store = {
   },
 };
 
-/* ---------- Screens ---------- */
+/* ---------- Screens visibility toggle ---------- */
 const show = (id) => {
-  screens.forEach((s) => s.classList.toggle("hidden", s.id !== id));
+  screens.forEach((s) => {
+    if (s.id === id) {
+      s.classList.remove("hidden");
+    } else {
+      s.classList.add("hidden");
+    }
+  });
   window.scrollTo(0, 0);
 };
 
-/* ---------- Splash: 2 seconds, then the notice board ---------- */
-const hideSplash = () => splash.classList.add("hidden");
+/* ---------- Splash: 2 seconds, then show home ---------- */
+const hideSplash = () => {
+  if (splash) splash.classList.add("hidden");
+};
 setTimeout(hideSplash, 2000);
-splash.addEventListener("click", hideSplash);
+if (splash) splash.addEventListener("click", hideSplash);
 
 /* ---------- Bulletproof navigation click handler ---------- */
 document.addEventListener("click", (e) => {
   const el = e.target.closest("a, button");
   if (!el) return;
 
-  const href = el.getAttribute("href") || "";
-  const id = el.id;
-
-  if (id === "navLogin" || id === "toLogin" || id === "logout" || href === "#login") {
+  const targetId = el.getAttribute("data-target");
+  if (targetId) {
     e.preventDefault();
     if (regMsg) regMsg.textContent = "";
     if (logMsg) logMsg.textContent = "";
-    show("login");
-  } else if (id === "toRegister" || href === "#register") {
-    e.preventDefault();
-    if (regMsg) regMsg.textContent = "";
-    if (logMsg) logMsg.textContent = "";
-    show("register");
-  } else if (el.matches("nav a") || href === "#notices" || href === "#deadlines" || href === "#submit" || href === "#home") {
-    e.preventDefault();
-    show("home");
+    show(targetId);
   }
 });
 
-/* ---------- Saved users ---------- */
+/* ---------- Saved users helper ---------- */
 const getUsers = () => {
   try { return JSON.parse(store.get("users")) ?? []; }
   catch { return []; }
@@ -92,7 +88,7 @@ if (regForm) {
       show("login");
       if (logMsg) {
         logMsg.style.color = "var(--brand)";
-        logMsg.textContent = "Account created! Please log in.";
+        logMsg.textContent = "Account created successfully! Please log in.";
       }
     } catch (error) {
       if (regMsg) {
@@ -129,23 +125,4 @@ if (logForm) {
       show("welcome");
     }
   });
-}
-
-/* ---------- Light / dark theme ---------- */
-const setTheme = (name) => {
-  const dark = name === "dark";
-  root.dataset.theme = name;
-  if (toggle) toggle.textContent = dark ? "Light" : "Dark";
-  store.set("theme", name);
-};
-
-const systemDark = matchMedia("(prefers-color-scheme: dark)").matches;
-const saved = store.get("theme");
-setTheme(saved ?? (systemDark ? "dark" : "light"));
-
-if (toggle) {
-  toggle.onclick = () => {
-    const dark = root.dataset.theme === "dark";
-    setTheme(dark ? "light" : "dark");
-  };
 }

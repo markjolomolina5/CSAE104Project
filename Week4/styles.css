@@ -329,30 +329,6 @@ footer p {
   letter-spacing: 0.03em;
 }
 
-/* ---------- Small screens ---------- */
-@media (max-width: 480px) {
-  .logo {
-    width: 52px;
-    height: 52px;
-  }
-
-  form {
-    padding: 18px;
-  }
-
-  th, td {
-    padding: 10px 12px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  * { transition: none !important; }
-}
-
-
-/* ================= Splash, login, register, dark mode ================= */
-
 /* ---------- Screens ---------- */
 .screen.hidden { display: none !important; }
 
@@ -397,7 +373,7 @@ footer p {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ---------- Login button in the nav (Background plate removed) ---------- */
+/* ---------- Login button in the nav ---------- */
 nav a.nav-login {
   background: transparent;
   color: var(--secondary);
@@ -449,48 +425,6 @@ nav a.nav-login:focus-visible {
   font-weight: 700;
 }
 
-/* ---------- Theme button ---------- */
-.theme {
-  position: fixed;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 50;
-  padding: 8px 20px;
-  border: 2px solid var(--secondary);
-}
-
-/* ---------- Dark mode ---------- */
-[data-theme="dark"] {
-  --page: #1c1416;
-  --surface: #2a1d20;
-  --text: #f4ece0;
-  --muted: #bfaeb0;
-  --border: #4a3538;
-  --brand-soft: #3b2327;
-  color-scheme: dark;
-}
-
-[data-theme="dark"] h2,
-[data-theme="dark"] h3,
-[data-theme="dark"] label { color: var(--secondary); }
-
-[data-theme="dark"] h2::after { background: var(--secondary); }
-
-[data-theme="dark"] input,
-[data-theme="dark"] select,
-[data-theme="dark"] textarea { background: var(--page); }
-
-[data-theme="dark"] input:focus,
-[data-theme="dark"] select:focus,
-[data-theme="dark"] textarea:focus { background: var(--surface); }
-
-[data-theme="dark"] tbody tr:nth-child(even) { background: #33242a; }
-[data-theme="dark"] tbody tr:hover { background: var(--brand-soft); }
-[data-theme="dark"] .tag,
-[data-theme="dark"] .auth-foot a { color: var(--secondary); }
-[data-theme="dark"] .card .message { color: #ff8787; }
-[data-theme="dark"] button:focus-visible { outline-color: var(--secondary); }
-
 #login .card {
   background: transparent;
   border: 0;
@@ -499,4 +433,9 @@ nav a.nav-login:focus-visible {
 
 @media (max-width: 480px) {
   .splash .logo { width: 80px; height: 80px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
 }
