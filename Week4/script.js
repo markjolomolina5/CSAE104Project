@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
         splash?.classList.add("hidden");
     };
 
-    setTimeout(hideSplash, 2000);
+    setTimeout(hideSplash, 1500);
 
     splash?.addEventListener("click", hideSplash);
 
