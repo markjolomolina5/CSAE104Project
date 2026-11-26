@@ -353,7 +353,7 @@ footer p {
 
 /* ================= Splash, login, register, dark mode ================= */
 
-/* ---------- Screens (Fixed with !important so hidden works) ---------- */
+/* ---------- Screens ---------- */
 .screen.hidden { display: none !important; }
 
 /* ---------- Splash (2 seconds total) ---------- */

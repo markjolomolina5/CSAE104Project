@@ -8,7 +8,7 @@ const logForm = document.querySelector("#logForm");
 const logMsg = document.querySelector("#logMsg");
 const hello = document.querySelector("#welcomeText");
 
-/* ---------- Safe storage ---------- */
+/* ---------- Safe storage with memory fallback ---------- */
 const memory = {};
 const store = {
   get(key) {
@@ -24,8 +24,6 @@ const store = {
 /* ---------- Screens ---------- */
 const show = (id) => {
   screens.forEach((s) => s.classList.toggle("hidden", s.id !== id));
-  regMsg.textContent = "";
-  logMsg.textContent = "";
   window.scrollTo(0, 0);
 };
 
@@ -34,7 +32,7 @@ const hideSplash = () => splash.classList.add("hidden");
 setTimeout(hideSplash, 2000);
 splash.addEventListener("click", hideSplash);
 
-/* ---------- One click listener for links and buttons ---------- */
+/* ---------- Navigation and buttons click handler ---------- */
 const goTo = {
   navLogin: "login",
   toLogin: "login",
@@ -45,11 +43,15 @@ const goTo = {
 document.addEventListener("click", (e) => {
   const el = e.target.closest("a, button");
   if (!el) return;
+  
   const id = goTo[el.id];
   if (id) {
     e.preventDefault();
+    regMsg.textContent = "";
+    logMsg.textContent = "";
     show(id);
   } else if (el.matches("nav a")) {
+    e.preventDefault();
     show("home");
   }
 });
@@ -63,24 +65,35 @@ const getUsers = () => {
 /* ---------- Register ---------- */
 regForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  regMsg.textContent = "";
   const f = regForm.elements;
   try {
     if (f.password.value.length < 8)
-      throw new Error("Password too short");
+      throw new Error("Password must be at least 8 characters");
     if (f.password.value !== f.confirm.value)
       throw new Error("Passwords do not match");
+    
     const email = f.email.value.trim().toLowerCase();
-    if (getUsers().some((u) => u.email === email))
-      throw new Error("Email already used");
-    const users = [...getUsers(), {
-      name: f.name.value,
+    const currentUsers = getUsers();
+    
+    if (currentUsers.some((u) => u.email === email))
+      throw new Error("Email already registered");
+    
+    const users = [...currentUsers, {
+      name: f.name.value.trim(),
       email,
       password: f.password.value,
     }];
+    
     store.set("users", JSON.stringify(users));
     regForm.reset();
+    
+    // Switch to login and show success notice
     show("login");
+    logMsg.style.color = "var(--brand)";
+    logMsg.textContent = "Account created! Please log in.";
   } catch (error) {
+    regMsg.style.color = "#c92a2a";
     regMsg.textContent = error.message;
   }
 });
@@ -88,15 +101,24 @@ regForm.addEventListener("submit", (e) => {
 /* ---------- Login ---------- */
 logForm.addEventListener("submit", (e) => {
   e.preventDefault();
+  logMsg.style.color = "#c92a2a";
+  logMsg.textContent = "";
+  
   const f = logForm.elements;
   const mail = f.email.value.trim().toLowerCase();
-  const user = getUsers().find((u) => u.email === mail);
-  if (user?.password === f.password.value) {
+  const password = f.password.value;
+  
+  const users = getUsers();
+  const user = users.find((u) => u.email === mail);
+  
+  if (!user) {
+    logMsg.textContent = "No account found with this email.";
+  } else if (user.password !== password) {
+    logMsg.textContent = "Incorrect password.";
+  } else {
     hello.textContent = `Welcome, ${user.name}!`;
     logForm.reset();
     show("welcome");
-  } else {
-    logMsg.textContent = "Wrong email or password";
   }
 });
 
