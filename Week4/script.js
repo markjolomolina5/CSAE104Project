@@ -8,6 +8,21 @@ const logForm = document.querySelector("#logForm");
 const logMsg = document.querySelector("#logMsg");
 const hello = document.querySelector("#welcomeText");
 
+/* ---------- Safe storage ---------- */
+// localStorage can be blocked (some previews, private modes).
+// If it is, fall back to memory so login and register still work.
+const memory = {};
+const store = {
+  get(key) {
+    try { return localStorage.getItem(key); }
+    catch { return memory[key] ?? null; }
+  },
+  set(key, value) {
+    try { localStorage.setItem(key, value); }
+    catch { memory[key] = value; }
+  },
+};
+
 /* ---------- Screens ---------- */
 // show hides every screen except the one you name
 const show = (id) => {
@@ -18,7 +33,9 @@ const show = (id) => {
 };
 
 /* ---------- Splash: 2 seconds, then the notice board ---------- */
-setTimeout(() => splash.classList.add("hidden"), 2000);
+const hideSplash = () => splash.classList.add("hidden");
+setTimeout(hideSplash, 2000);
+splash.addEventListener("click", hideSplash); // tap to skip
 
 /* ---------- One click listener for links and buttons ---------- */
 const goTo = {
@@ -41,7 +58,10 @@ document.addEventListener("click", (e) => {
 });
 
 /* ---------- Saved users (practice only: localStorage) ---------- */
-const getUsers = () => JSON.parse(localStorage.getItem("users")) ?? [];
+const getUsers = () => {
+  try { return JSON.parse(store.get("users")) ?? []; }
+  catch { return []; }
+};
 
 /* ---------- Register ---------- */
 regForm.addEventListener("submit", (e) => {
@@ -59,7 +79,7 @@ regForm.addEventListener("submit", (e) => {
       name: f.name.value, email,
       password: f.password.value,
     }];
-    localStorage.setItem("users", JSON.stringify(users));
+    store.set("users", JSON.stringify(users));
     regForm.reset();
     show("login");
   } catch (error) {
@@ -87,11 +107,11 @@ const setTheme = (name) => {
   const dark = name === "dark";
   root.dataset.theme = name;
   toggle.textContent = dark ? "Light" : "Dark";
-  localStorage.setItem("theme", name);
+  store.set("theme", name);
 };
 
 const systemDark = matchMedia("(prefers-color-scheme: dark)").matches;
-const saved = localStorage.getItem("theme");
+const saved = store.get("theme");
 setTheme(saved ?? (systemDark ? "dark" : "light"));
 
 toggle.onclick = () => {
