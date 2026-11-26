@@ -364,7 +364,7 @@ footer p {
 /* ---------- Screens ---------- */
 .screen.hidden { display: none; }
 
-/* ---------- Splash (2 seconds) ---------- */
+/* ---------- Splash (2 seconds total) ---------- */
 .splash {
   position: fixed;
   inset: 0;
@@ -377,7 +377,7 @@ footer p {
   text-align: center;
   color: var(--secondary);
   background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand) 55%, var(--brand-light) 100%);
-  /* starts fading at 1.6s and is fully gone at 2s, no JavaScript needed */
+  /* visible for 1.6s, fades out over 0.4s, fully gone at 2s, no JavaScript needed */
   animation: splash-out 0.4s ease 1.6s forwards;
 }
 
