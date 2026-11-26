@@ -46,7 +46,7 @@ const hideSplash = () => {
     }
 };
 
-setTimeout(hideSplash, 2000);
+setTimeout(hideSplash, 1000);
 
 if (splash) {
     splash.addEventListener("click", hideSplash);
