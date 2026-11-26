@@ -34,15 +34,14 @@ header {
   color: var(--surface);
   border-bottom: 4px solid var(--accent);
   box-shadow: 0 6px 20px rgba(18, 54, 95, 0.25);
-  padding: 20px max(20px, calc((100% - 760px) / 2 + 20px));
+  padding: 20px 24px;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
 }
 
-/* Logo on the left, school name on the right */
+/* Logo on the left, school name beside it */
 .brand {
   display: flex;
   flex-direction: row;
@@ -72,7 +71,7 @@ header {
 /* ---------- Navigation ---------- */
 nav ul {
   list-style: none;
-  margin: 0;
+  margin: 0 0 0 -16px;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -354,5 +353,5 @@ footer p {
 /* The .meta line stayed gray because of SPECIFICITY.
    .meta (one class, 0,1,0) beats p (one element, 0,0,1) even though
    p comes later in the file. Order only matters when specificity is
-   equal, and inherited values lose to any rule that targets the
+   equal, and inherited values lose to any rule that takes the
    element itself. */
